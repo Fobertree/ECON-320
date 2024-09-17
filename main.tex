@@ -1,0 +1,377 @@
+\documentclass[10pt, oneside]{article} 
+\usepackage{amsmath, amsthm, amssymb, calrsfs, wasysym, verbatim, bbm, color, graphics, geometry, textcomp}
+
+\geometry{tmargin=.75in, bmargin=.75in, lmargin=.75in, rmargin = .75in}  
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Cdot}{\boldsymbol{\cdot}}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{conv}{Convention}
+\newtheorem{rem}{Remark}
+\newtheorem{lem}{Lemma}
+\newtheorem{cor}{Corollary}
+
+\usepackage[hidelinks]{hyperref}
+
+\title{ECON 320}
+\author{Alexander Liu}
+\date{Fall 2024}
+
+\begin{document}
+
+\fontsize{12pt}{15pt}\selectfont
+
+\maketitle
+\tableofcontents
+
+\vspace{.5in}
+
+\section{Review}
+\subsection{Introduction}
+\begin{itemize}
+    \item All lectures are self-contained (just have to follow lectures to do perfect in the class)
+\end{itemize}
+\subsection{What is a Random Variable?}
+\begin{itemize}
+    \item What's out of our control even if we control all the parameters of our problem.
+    \item \textbf{A R.V. is a function mapping a sample space (domain: probability space) into real line $\R$ (range)}. In other words, the sample space is the input and real line is the range of outputs (domains/range from algebra)
+    \begin{itemize}
+        \item Lay explanation: unknown variable that takes in an input and produces an output
+    \end{itemize}
+    \item Real line: the range of values the R.V. can map to
+    \item Two types of R.V.: Discrete and Continuous
+    \begin{itemize}
+         \item Discrete R.V.: X takes on one of a finite or countably infinite (ie. the integers) number of values
+        \item Continuous R.V.: $P\{X=x\}=0, \forall x \in \R$
+    \end{itemize}
+\end{itemize}
+\subsection{CDF (cumulative distribution function, $F_X(x)$) and PDF (probability density function, $f_X(x)$)}
+\begin{itemize}
+    \item Derivative of CDF is PDF ($f_X(x)=\frac{dF(x)}{dx})$, integral of PDF is CDF ($F_X(x)=\int^x_{-\infty} f_X(z)dz$)
+    \item A pdf can have values \textbf{GREATER} than 1, but cdf \textbf{MUST} sum to $1$
+    \item Proerties of Probability Density Functions (pdf):
+    \begin{itemize}
+        \item $f_X(x)\geq 0,$ and either
+        \item $\sum^n_{i=1}f_X(x_i)=1$ (discrete)
+        \item $\int^{\infty}_{\-infty} f_X(x)dx = 1$ (continuous)
+    \end{itemize}
+\end{itemize}
+\subsection{Expected Values}
+\begin{itemize}
+    \item $E(X)=\int_{-\infty}^{\infty} xf(x)dx\equiv \mu_X$
+    \item $E(g(X))=\int_{-\infty}^{\infty} g(x)f(x)dx$
+    \item $E$ can be thought as an integral
+    \begin{itemize}
+        \item $E[f(x)] =\int_{-\infty}^{\infty} f(x)dx$
+    \end{itemize}
+    \item an Expectation can be thought of as linear
+    \item $E[aX+bX] = aE[X] + bE[X]$
+    \item \textbf{IMPORTANT}: $E[XY] \neq E[X]E[Y]$ \textbf{UNLESS THEY ARE INDEPENDENT}
+    \item $E[X\varepsilon]$, $\varepsilon$ is a R.V. In this case, the expectation is a double integral (integrate with respect to X, and with respect to $\varepsilon$). So, $\iint x\cdot \varepsilon x    f(x,\varepsilon)dxd\varepsilon$, (joint function times joint density function)
+    \item Properties of Expectation Operator
+    \begin{itemize}
+        \item $E[a] = a, \forall \text{ constants a}$
+        \item $E[bX] = bE[X], \forall \text{ constants } b, R.V.\text{ }X$
+        \item $E[g(X) + h(X)] = E[g(X)] + E[h(X)], \forall g(\cdot), h(\cdot) \Rightarrow E[a+bX]=a+bE[X]$
+        \item Variance of a r.v. X (see derivation below): $var(X)=E(X^2)-\mu_X ^2$ 
+        \item $Var(aX)=E[(aX)^2]-E([aX])^2=a^2 E[X^2]-a^2(E[X])^2$, where (a,b) are constants
+    \end{itemize}
+\end{itemize}
+\subsection{Variance}
+\begin{itemize}
+    \item $\sigma^2 _X = var(X)=E[(X-\mu_X)^2]=E(X^2-2X\mu_X+\mu^2_X)=E(X^2)-2\mu_X E(X)+\mu^2 _X = E(X^2)-\mu^2_X$ (remember $-2\mu_X E[X] = -2\mu_X \cdot \mu_X\text{, since } E[X] = \mu_X$)
+    \item Standard Deviation: $\sigma_X=\sqrt{\sigma^2 _X}=\sqrt{var(X)}$
+    \item $var(a+bX) =b^2var(X)$, where a,b are constants
+    \begin{itemize}
+        \item $Var(aX)=E[(aX)^2]-E([aX])^2=a^2 E[X^2]-a^2(E[X])^2$
+    \end{itemize}
+\end{itemize}
+\subsection{Bivariate/Multivariate R.V's}
+\begin{itemize}
+    \item X,Y have the joint cdf $F_{X,Y}(x,y)=P(X\leq x, Y\leq y)=\int^{x}_{-\infty}\int^{y}_{-\infty} f_{X,Y} (u,v) dvdu$
+    \item \textbf{Marginal cdf}: $F_X(x) =P(X\leq x)=\int _{-\infty} ^ x\int^{\infty}_{-\infty} f_{X,Y}(u,v)dvdu\equiv \int^{x}_{-\infty f_X(u)du}$
+    \item \textbf{Marginal pdf}: $f_X(x) =P(X\leq x)=\int _{-\infty} ^ {\infty} f_{X,Y}(u,v)dv$. In other words, take integral (a slice) along one axis
+    \item \textbf{Independence:} X and Y are independent iff
+    \begin{itemize}
+        \item $f_X,Y (x,y)=f_X(x) f_Y(y), $ so \\
+        $P(X\leq x, Y\leq y) = \int^{x}_{-\infty}\int^{y}_{-\infty} f_X(u)f_Y(v) dvdu=P(X\leq x)P(Y\leq y)$
+    \end{itemize}
+    \item \textbf{Conditional pdf}: $\frac{\text{joint distribution}}{\text{marginal distribution}}$
+    \begin{itemize}
+        \item Conditional pdf of $Y$ given $X=x:f_{Y|X}(y|x) =\frac{f_{X,Y} (x,y)}{f_X (x)}, [=\frac{\text{joint}}{\text{marginal}}]$
+        \item \textbf{Conditional pdf and independence}: Y and X are independent iff $f_{Y|X} (y|x) =f_Y (y)$
+        \item \textbf{Covariance:} $cov(X,Y)=E[(X-\mu_X)(Y-\mu_Y)]=E(XY)-\mu_X\mu_Y$
+    \end{itemize}
+\end{itemize}
+\subsection{Covariance}
+\begin{itemize}
+    \item $cov(X,Y)=E[(X-\mu_X)(Y-\mu_Y)]=E(XY)-\mu_X\mu_Y$ $(a^2-b^2)$
+\end{itemize}
+
+\subsection{General Rules for Means, Variances, and Covariances}
+\begin{itemize}
+    \item 1) $E(a+bX+bY+dZ+...)=a+bE[X]+cE[Y]+dE[Z]+...$
+    \item 2) $cov(a+bX, c+dY)=bdcov(X,Y)$
+    \item 3) Important (like binomial formula $(a+b)^2$): $var(a+bX+cY)=b^2 var(X)+ c^2 var(Y)+2bccov(X,Y)$
+    \item $X$ and $Y$ are independent $\Rightarrow cov(X,Y)=0$ [Note: Converse is not true]
+\end{itemize}
+\subsection{Standardized Variables and Correlation}
+\begin{itemize}
+    \item treat the bar as indicating standardized variables here
+    \item Let $\bar{X} = \frac{X-\mu_X}{\sigma_x}$ and $\bar{Y}
+    =\frac{Y-\mu_Y}{\sigma_Y}$ $\leftarrow$ like Normalization layer in Transformer architecture, containing range
+    \item \textbf{CHECK WITH PROF}: $E(\bar{X})=0=E(\bar{Y})$
+    \item Why?
+    \begin{itemize}
+        \item $E(\bar X) = E[\frac{X-\mu_X}{\sigma_X}]=\frac{1}{\sigma_X}E[X-\mu_X]=\frac{1}{\sigma_X} E[X] -\mu_X=\frac{1}{\sigma_X}(\mu_X-\mu_X)=0$
+        \item $var(\bar X) = \sigma ^{-2} var(X)=1=var(\bar Y)$
+    \end{itemize}
+    \item $var(\bar X) = 1= var(\bar Y)$ \textbf{check if X is supposed to be barred}
+    \item Why?
+    \begin{itemize}
+        \item $var(\bar X)=\sigma^{-2} var(X-\mu_X) \text{ (factoring out constant from var() squares it)}=\sigma^{-2} var(\bar X)= \sigma^{-2} \times \sigma^2 = 1 = var(\bar Y)$
+    \end{itemize}
+    \item The \textbf{Correlation} between X and Y is $\rho_{X,Y}=\frac{cov(X,Y)}{\sigma_X \sigma_Y} = cov(\bar X, \bar Y)$. 
+    \begin{itemize}
+        \item Correlation is the covariance between standardized variables. Since mean doesn't matter here (constants removed in cov()), we only need to standardize with $\sigma$
+    \end{itemize}
+\end{itemize}
+\subsection{Normal Distribution (Gaussian)}
+\begin{itemize}
+    \item $X \sim N(\mu,\sigma ^2)$
+    \begin{itemize}
+        \item Standard Normal: $X\sim N(0,1)$
+    \end{itemize}
+    \item $f_X(x)=\frac{1}{\sqrt{2\pi\sigma^2}}exp\{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2\}$
+\end{itemize}
+\subsection{Useful Results for Gaussian}
+\begin{itemize}
+    \item 4) Normal Distribution / Chi-Square = t distribution
+\end{itemize}
+
+
+End first-day end page 3. Useful Results for Gaussian incomplete
+
+\subsection{Convergence in Probability}
+\begin{itemize}
+    \item Supposed $Y_1, Y_2,...$ is a sequence of random variables. This sequence converges to a number $b$ if the probability distribution of $Y_n$ becomes more and more concentrated around $b$ as $n\rightarrow \infty$. $lim_{n\rightarrow \infty} Y_n = b$
+    \begin{itemize}
+        \item Formally, The sequence $\{Y_n\} \text{ converges in probability to } b \text{ if }\forall \epsilon > 0, P(|Y_n-b| < \epsilon) \rightarrow 1 \text{ as } n\rightarrow \infty$
+    \end{itemize}
+\end{itemize}
+
+\subsection{Law of Large Numbers}
+\begin{itemize}
+    \item The sample mean of R.V. X approaches population mean $\mu = E[X_i]$ as sample size $n$ increases
+    \item Formally, suppose $X_1, ..., X_n$ form a random sample form a distribution for which the mean is $\mu =E(X_i)$, and let $\bar X_n $ denote the sample mean. Then $plim \bar X_n = E(X_i)$
+\end{itemize}
+
+\subsection{Central Limit Theorem}
+\begin{itemize}
+    \item Formally, suppose $X_1, ..., X_n$ denotes n independently and identically distributed (iid) random variables with the same pdf with mean $\mu$ and variance $\sigma^2$. As $n\rightarrow \infty, \bar X_n \sim N(\mu, \frac{\sigma^2}{n})$
+    \item So, sample mean $\bar X_n $ approaches the normal distribution with mean $\mu$ and variance $\frac{\sigma^2}{n}$, regardless of the form of the pdf of the $X_i$'s, (so even when it is NOT normal)
+\end{itemize}
+
+\section{Estimators and the Linear Model}
+
+\subsection{Estimators}
+\begin{itemize}
+    \item We need to find parameters such as $\mu$ or $\sigma^2$
+    \item An estimator is a mathematical expression that approximates the values of these parameters in terms of available observations
+    \item Important: The estimator is a R.V., since it is a function of other random variables
+\end{itemize}
+
+\subsection{Criteria of Estimators}
+\begin{itemize}
+    \item An estimator $\hat \mu$ (hat indicates estimator) of $\mu$ is \textbf{unbiased} if $E(\hat \mu) = \mu$
+    \item An estimator is \textbf{efficient} if $var(\hat \mu) \leq var(\tilde{\mu})\text{ } \forall \text{ unbiased estimators } \tilde \mu$. Let $\sim$ signify unbiased estimator
+    \item Think of ``bias" as being related to mean and ``efficient" as being related to variance
+    \item \textbf{Mean Square Error} of $\hat mu$ is $MSE(\hat \mu)\equiv E[(\hat \mu -\mu)^2]$
+    \begin{itemize}
+        \item $MSE(\hat \mu) \equiv (E\hat \mu -\mu)^2 + var(\hat \mu) = [Bias(\hat \mu)]^2 + var(\hat \mu)$
+    \end{itemize}
+    \item Estimators discussed so far don't concern the size of the sample. But some may prefer large samples (can shrink bias and/or variance). In such cases, estimators may be judged on its asymptotic properties - properties in very large samples
+\end{itemize}
+
+\subsection{The Simple Linear Model}
+\begin{itemize}
+    \item $Y_i =\beta_1 + \beta_2 X_i + \epsilon_i$
+    \begin{itemize}
+        \item We want to find a line that minimizes $\sum \epsilon_i$ (line of ``best fit")
+        \item We assume a line that is supplemented by our assumption. Only $X_i$ is observed
+        \item Only thing that is ``random" by nature is $\epsilon_i$
+        \begin{itemize}
+            \item In other words: $Y=f(\epsilon_i)$. NEVER prove anything with $Y_i$. ALWAYS plug in the formula and work with $\epsilon_i$, since it's the only thing we have to address due to its randomness
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Basic Assumptions about Linear Model}
+\begin{itemize}
+    \item Homoskedasticity: $E(\epsilon_i^2) = var(\epsilon_i) = \sigma^2 \forall i$. The dispersion of each data point remains constant
+    \item No Serial Correlation: $E(\epsilon_i \epsilon_j) = 0$ if $i\neq j$. No relationship between data
+\end{itemize}
+
+\subsection{Some Implications of Basic Assumptions}
+\begin{itemize}
+    \item Always focus on reducing $Y_i$ to $\epsilon_i$
+    \item $E(Y_i)=E(\beta_1 + \beta_2 X_i + \epsilon_i) =\beta_1 + \beta_2 X_i + E(\epsilon_i) =\beta_1+\beta_2 X_i$. Expectation of $\beta_1 + \beta_2 X_i$ is itself since it is nonrandom. $E[\epsilon_i]=0$
+    \item $varY_i = E[(Y_i -EY_i)^2] = E[(\beta_1+\beta-2 X_i + \epsilon_i -\beta_1 -\beta_2 X_i)^2]=E(\epsilon_i ^2) \textbf{(homoskedasticity)}= \sigma ^2$
+    \item $cov(Y_i, Y_j) = 0, \forall i \neq j$
+\end{itemize}
+
+EPSILON IS AN ASSUMPTION AND IS \textbf{NEVER} OBSERVED. ALL WE KNOW IS $E[\epsilon_i] = 0$
+
+\subsection{Estimation of the regression coefficients $\beta_0, \beta_2$}
+\begin{itemize}
+    \item How do we choose the ``line of best fit"? Broadly speaking, minimize error, but what is error? Also broadly speaking, it is an estimator of $\epsilon_i$, which we prefer to minimize.
+    \begin{itemize}
+        \item Estimator for $\epsilon$, $\hat \epsilon_i$
+        \item Minimize the squares of the $\epsilon_i$
+        \item \textbf{IMPORTANT: $min_{\beta_1, \beta_2} \sum _{i} \hat \epsilon_i ^2  $}
+        \begin{itemize}
+            \item $\sum _{i} \hat \epsilon_i ^2 =\sum_i (Y_i -\beta_1 -\beta_2 X_i)^2$. In English, we plug in our regression guess at each iteration
+        \end{itemize}
+        Algorithmic approach (we arrive at a closed-form solution later)
+        \begin{itemize}
+            \item Start with initial guess, then assign estimators $\hat \epsilon_1$ for first observation, and so on. Square each estimator
+            \item Why square it?
+            \begin{itemize}
+                \item MAD (mean absolute deviation) $\hat \epsilon_i$
+                \item Above is bad due to reaching zero gradient (similar to vanishing gradient problem)
+                \item Convex function (parabolic matching $x^2$), so if it is 0, we know it's the minimum
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    \item 3 possibilities (for the time being)
+    \begin{itemize}
+        \item $min_{\beta_1, \beta_2} \sum ^n _{i=1} (Y_i - \beta_1 -\beta_2 X_i)^2$ (``Least Squares", aka ``Ordinary Least Squares" estimators $\hat \beta_1, \hat \beta_2$ amounts to choosing the line that minimizes the sum of squared deviations. \textbf{We use this})
+        \item $min_{\beta_1, \beta_2} \sum ^n _{i=1} |Y_i - \beta_1 -\beta_2 X_i|$, ``Least Absolute Deviations" aka ``mean absolute deviation" (MAD) estimators $\tilde \beta_1, \tilde \beta_2$
+        \item $min_{\beta_1, \beta_2} \sum ^n _{i=1} (X_i + \frac{\beta_1}{\beta_2} - \frac{Y_i}{\beta_2})^2$, ``Reverse Least Squares" estimators $\bar \beta_1, \bar \beta_2$
+    \end{itemize}
+\end{itemize}
+
+\section{Obtaining Our Linear Estimators (the betas)}
+
+\subsection{Ordinary Least Squares - Gauss-Markov Theorem}
+\begin{itemize}
+    \item Follows the following assumptions
+    \item $\hat \beta_1, \hat \beta_2$ are BLUE (best linear unbiased estimators, where best means most efficient) under Basic Assumptions
+    \item If the errors are normal, $\hat \beta_1, \hat \beta_2$ are MVUE (minimum variance unbiased estimators) (even better than BLUE, since it considers all, not just linear-unbiased estimators)
+    \item $\hat \beta_1, \hat \beta_2$ are consistent, asymptotically normal, and, under normality of the error term, asymptotically efficient
+\end{itemize}
+
+We often test $\beta_2 = 0$. Papers want a non-zero slope ($\beta_2$) because it means there may be some predicted relationship
+
+\subsection{Derivation of OLS Estimators}
+\begin{itemize}
+    \item We don't need gradient descent because we have an easier way to get OLS estimators $\beta_1$ and $\beta_2$
+    \item Approach
+    \begin{itemize}
+        \item Minimize sum of squared residuals: $min_{\beta_1, \beta_2} \sum ^n _{i=1} (Y_i - \beta_1 -\beta_2 X_i)^2$
+        \begin{itemize}
+            \item Comes from $\epsilon =Y_i - \beta_1 -\beta_2 X_i,$ so minimize $\sum \epsilon^2$
+        \end{itemize}
+        \item Take first derivative (partial derivatives with respect to both betas, remember chain rule for $\beta_2$) and set it to 0
+        \item $\beta_1: \frac{\partial S}{\partial \beta_1} = \sum_{i=1} ^ n -2(Y_i -\hat \beta_1 -\hat \beta_2 X_i) = 0$
+        \item $\beta_2: \frac{\partial S}{\partial \beta_2} = \sum_{i=1} ^ n -2X_i(Y_i -\hat \beta_1 -\hat \beta_2 X_i) = 0$
+        \item Why the hats?
+        \begin{itemize}
+            \item Philosophical: We get numbers that will be our estimators. In practice, not strictly necessary.
+        \end{itemize}
+        \item We can condense the partial derivatives to be even simpler
+        \item We call the 2 equations we have to solve for $\hat \beta_1, \hat \beta_2$ the ``normal equations". Rewriting and letting $\hat \epsilon_i=Y_i -\hat \beta_1 -\hat \beta_2 X_i \text{ (and diving both sides by constant -2)},$ we have
+        \begin{itemize}
+            \item $\frac{1}{n}\sum _{i=1} ^ n \hat \epsilon_i = 0$
+            \item $\frac{1}{n} \sum_{i=1} ^ n X_i \hat \epsilon_i =0$
+            \begin{itemize}
+                \item $E[X_i \epsilon_i] = 0, E[\epsilon_i] = 0$. Law of large numbers, converges
+            \end{itemize}
+        \end{itemize}
+        \item What's the intuition behind the normal equations (part of Gauss Markov-Assumptions)?
+        \begin{itemize}
+            \item $\hat y_i = \hat \beta_1 + \hat \beta_2 X_i$. Why no $\epsilon$? Our $\hat y_i$ is a prediction. $\hat \epsilon_i = y_i - \hat y_i$
+            \item We cancel out the -2, since the other side is 0.
+            \item Why $\frac{1}{n}$? Same as before, just a notational thing averaging the residuals.
+            \item We call estimators of error terms $\hat \epsilon_i$ residuals
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Closed Form Solution to get $\hat \beta_2$ and $\hat \beta_1$}
+\begin{itemize}
+    \item \textbf{SUPER IMPORTANT. MOST IMPORTANT FORMULAS OF THE CLASS}
+    \item Solve for $\hat \beta_2$ first, then plug back in for $\hat \beta_1$
+    \item $\hat \beta_2 = \frac{\frac{1}{n} \sum(X_i - \bar X) (Y_i - \bar Y)}{\frac{1}{n} \sum (X_i - \bar X)^2} = \frac{\hat \sigma_{XY}}{\hat \sigma^2 _X} = r_{XY} \frac{\hat \sigma_Y}{\hat \sigma_X}$. $\hat \beta_2 = \frac{cov(Y,X)}{var(X)}$
+    \begin{itemize}
+        \item Empirical covariance over squared variance of x
+        \item $r_XY$ is the correlation coefficient, where $r_{XY}=\hat \rho_{XY}$ and since \\$\rho_{XY}=\frac{\sigma_{XY}}{\sigma_X \sigma_Y}, \sigma_{XY}=\rho_{XY}\sigma_X \sigma_Y$
+    \end{itemize}
+    \item $\hat \beta_1 = \bar Y - \hat \beta_2 \bar X$. 
+
+\end{itemize}
+
+To show minimum (minimum squared errors $S$), take second-order partial derivative of $\sum \epsilon^2$ and show it's zero (indicates local min/max)
+
+\section{Proving the Validity of the Linear Model: Gauss-Markov}
+
+\subsection{Linearity of $\hat \beta_1, \hat \beta_2$}
+\begin{itemize}
+    \item Can write $\hat \beta_1=\sum_{i=1} ^n a_i Y_i$ and $\hat \beta_2 =\sum_{i=1} ^n b_iY_i$
+    \begin{itemize}
+        \item Where $b_i = \frac{\frac{1}{n} (X_i-\bar X)}{\frac{1}{n} \sum(X_i-\bar X)^2}$ and $a_i = \frac{1}{n} - b_i \bar X$
+        \begin{itemize}
+            \item $\hat \beta_2 = \frac{\sum_i (Y_i -\bar Y) (X_i -\bar X)}{\sum_i (X_i -\bar X)^2}=\text{(FOIL $\rightarrow$)} \frac{\sum_i Y_i (X_i -\bar X)-\sum_i \bar Y (X_i -\bar X)}{\sum_i (X_i -\bar X)^2}=\frac{\sum_i Y_i (X_i-\bar X)}{\sum _i (X_i - \bar X)^2} - \frac{\sum_i \bar Y (X_i-\bar X)}{\sum _i (X_i - \bar X)^2}$ \\
+            $\sum(X_i -\bar X)$ is zero (the denominator is not because it is sum of squared differences), so $\frac{\sum_i Y_i (X_i-\bar X)}{\sum _i (X_i - \bar X)^2} = 0$, we can pull out $\bar Y$ from the summation in the second fraction. At this point we notice the denominator is variance (a \textbf{constant}). Factor out $Y_i$ so we can find a constant linear coefficient to prove linearity.
+            \item $\sum_i \frac{1}{\sum_j (X_i - \bar X)^2} Y_i (X_i -\bar X) =\sum_i Y_i \frac{(X_i -\bar X)}{\sum_i (X_i -\bar X)^2}$. Isolate $Y_i$ from this, as $\hat \beta_2 = b_i Y_i$. Hence we prove that $\hat \beta_2$ and linear regression maintains a linear relationship with y values. \textbf{In other words, we prove that $\hat \beta_2$ is a linear estimator}
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Unbiasedness of OLS Estimators}
+\begin{itemize}
+    \item How do we prove unbiasedness? $E[\epsilon_i]=0$. 
+    \item Step 1: Setup $E[\hat \beta_2 ]$. To do this, lets work backwards by plugging in the estimator $E[\hat \beta_2]=E[\frac{\sum_i (Y_i -\bar Y) (X_i -\bar X)}{\sum_i (X_i -\bar X)^2}]$. We need to make the epsilon show up 
+    \item Step 2: Plug in the model for $Y_i, \bar Y$. Substitute $Y_i=\beta_1 + \beta_2 X_i + \epsilon_i$ and $\bar Y=\beta_1 +\beta_2 \bar X + \bar \epsilon$ into equations to add $\hat \beta_1, \hat \beta_2$ by expanding $(Y_i -\bar Y)$ \\
+    $=E[\frac{\frac{1}{n} 
+    \sum_{i=1} ^ n(\beta_1 + \beta_2 X_i + \epsilon_i - \beta_1 - \beta_2 \bar X -\bar \epsilon)(X_i -\bar X)}{\hat \sigma_X ^2}]$. $\beta_1$ is canceled out, can pull out $\beta_2$
+    \item $E[\frac{\frac{1}{n} \sum_{i=1} ^ n (\beta_2 (X_i -\bar X) + \epsilon_i -\bar \epsilon)(X_i -\bar X)}{\hat \sigma_X ^2}]$
+    \item $=E[\frac{\frac{1}{n} \sum_{i=1}^n \beta_2 (X_i - \bar X)^2 + (\epsilon_i -\bar \epsilon) (X_i -\bar X)}{\hat \sigma_X ^2}]$. Separate into two expectations in next step
+    \item $=E[\frac{\frac{1}{n}\sum_{i=1} ^n \beta_2 (X_i -\bar X)^2}{\frac{1}{n} \sum_{i=1} ^n (X_i - \bar X)^2}] + E[ \frac{\frac{1}{n}\sum_{i=1} ^ n (X_i -\bar X) (\epsilon_i -\bar \epsilon)}{\frac{1}{n} \sum_i(X_i -\bar X)^2}]$
+    \item $=E[\beta_2] + E[ \frac{\frac{1}{n}\sum_{i=1} ^ n (X_i -\bar X) (\epsilon_i -\bar \epsilon)}{\frac{1}{n} \sum_i(X_i -\bar X)^2}]$. We can take out $\beta_2$ out of expectation since it's a constant. \textbf{To show unbiasedness, we must show that the second expectation is 0}.
+\end{itemize}
+
+IF we show that estimators are both linear, unbiased, and also GLUE, we KNOW that they are the BEST estimators we can have
+
+\section{Terminology}
+\begin{itemize}
+    \item Random Variable (R.V.): random variable X is a function from some sample space onto the real line; a function $X: \Omega \rightarrow \R$, where $\Omega$ is an abstract space
+    \item Discrete R.V.: X takes on one of a finite or countably infinite (ie. the integers) number of values
+    \item Continuous R.V.: $P\{X=x\}=0, \forall x \in \R$
+    \item Probability Density function (aka probability mass function, pdf, $f_x(X)$)
+    \item Uniform Discrete Distribution
+    \item Cumulative Distribution Function (cdf, $F_x(X)$): 
+    \begin{itemize}
+        \item Given R.V. $X$, 
+        \begin{itemize}
+            \item $F_X(x) = F(x)=P\{X\leq x\}\Rightarrow P\{a<X\leq b\}=F(b)-F(a) \text{ if } b> a$, 
+            \item Random variables in capital letters,``values" in lower-case
+        \end{itemize}
+        
+    \end{itemize}
+    \item Variance: ``dispersion around the mean"
+\end{itemize}
+
+
+\section{Bonus (not in class)}
+\begin{itemize}
+    \item Copulas
+    \item Jensen's inequality
+\end{itemize}
+\end{document}
