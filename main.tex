@@ -311,7 +311,7 @@ We often test $\beta_2 = 0$. Papers want a non-zero slope ($\beta_2$) because it
     \item $\hat \beta_2 = \frac{\frac{1}{n} \sum(X_i - \bar X) (Y_i - \bar Y)}{\frac{1}{n} \sum (X_i - \bar X)^2} = \frac{\hat \sigma_{XY}}{\hat \sigma^2 _X} = r_{XY} \frac{\hat \sigma_Y}{\hat \sigma_X}$. $\hat \beta_2 = \frac{cov(Y,X)}{var(X)}$
     \begin{itemize}
         \item Empirical covariance over squared variance of x
-        \item $r_XY$ is the correlation coefficient, where $r_{XY}=\hat \rho_{XY}$ and since \\$\rho_{XY}=\frac{\sigma_{XY}}{\sigma_X \sigma_Y}, \sigma_{XY}=\rho_{XY}\sigma_X \sigma_Y$
+        \item $r_{XY}$ is the correlation coefficient, where $r_{XY}=\hat \rho_{XY}$ and since \\$\rho_{XY}=\frac{\sigma_{XY}}{\sigma_X \sigma_Y}, \sigma_{XY}=\rho_{XY}\sigma_X \sigma_Y$
     \end{itemize}
     \item $\hat \beta_1 = \bar Y - \hat \beta_2 \bar X$. 
 
@@ -319,7 +319,7 @@ We often test $\beta_2 = 0$. Papers want a non-zero slope ($\beta_2$) because it
 
 To show minimum (minimum squared errors $S$), take second-order partial derivative of $\sum \epsilon^2$ and show it's zero (indicates local min/max)
 
-\section{Proving the Validity of the Linear Model: Gauss-Markov}
+\section{Proving the Validity of the Linear Model: Gauss-Markov (BLUE)}
 
 \subsection{Linearity of $\hat \beta_1, \hat \beta_2$}
 \begin{itemize}
@@ -345,9 +345,94 @@ To show minimum (minimum squared errors $S$), take second-order partial derivati
     \item $=E[\frac{\frac{1}{n} \sum_{i=1}^n \beta_2 (X_i - \bar X)^2 + (\epsilon_i -\bar \epsilon) (X_i -\bar X)}{\hat \sigma_X ^2}]$. Separate into two expectations in next step
     \item $=E[\frac{\frac{1}{n}\sum_{i=1} ^n \beta_2 (X_i -\bar X)^2}{\frac{1}{n} \sum_{i=1} ^n (X_i - \bar X)^2}] + E[ \frac{\frac{1}{n}\sum_{i=1} ^ n (X_i -\bar X) (\epsilon_i -\bar \epsilon)}{\frac{1}{n} \sum_i(X_i -\bar X)^2}]$
     \item $=E[\beta_2] + E[ \frac{\frac{1}{n}\sum_{i=1} ^ n (X_i -\bar X) (\epsilon_i -\bar \epsilon)}{\frac{1}{n} \sum_i(X_i -\bar X)^2}]$. We can take out $\beta_2$ out of expectation since it's a constant. \textbf{To show unbiasedness, we must show that the second expectation is 0}.
+    \item If unbiased, $E[\hat \beta_2] = \beta_2$
 \end{itemize}
 
 IF we show that estimators are both linear, unbiased, and also GLUE, we KNOW that they are the BEST estimators we can have
+
+Gauss-Markov BLUE: Best Linear Unbiased Estimators
+\subsection{Variance}
+Context
+\begin{itemize}
+    \item $E[\epsilon_i] =0$. Unbiasedness is a first moment measure. We just have to show this for unbiasedness.
+    \item $Y_i = \beta_1 + \beta_2 X_i +\epsilon_i$. $\hat \beta_2 =f(\epsilon_i)$.
+    \item Apply this to variance: $var(\hat \beta_2) = var(\epsilon_i)$
+    \item General form: $Var(Z)=E[(Z-E[Z])^2]$
+\end{itemize}
+
+Variance of $\hat \beta_2: var(\hat \beta_2) = E[(\hat \beta_2 - \beta_2 )^2] \rightarrow var(\hat \beta_2) = E[(\frac{\sum (X_i - \bar X) (\epsilon_i - \bar \epsilon)}{\sum (X_i - \bar X)^2})^2]=\frac{E([\sum(X_i - \bar X) (\epsilon_i -\bar \epsilon)]^2)}{[\sum(X_i -\bar X)^2]^2}$. $E[\hat \beta_2 ] = \beta_2$
+\begin{itemize}
+    \item $E[\frac{1}{(\sum_i (X_i -\bar X)^2 )^2} \cdot (\sum(X_i-\bar X)( \epsilon_i -\bar \epsilon)]$ Can pull out first part (variance, constant) from expectation
+    \item $var(\hat \beta_2) = var(\hat \beta_2 - \beta_2)$, since shifting by a constant doesn't affect variance. We have constant $\beta_2$ here to start cancelling things out.
+    \item Next step: plug in $\hat \beta_2$. $var(\frac{\sum_i (Y_i - \bar Y)(X_i - \bar X)}{\sum_i (X_i -\bar X)^2} - \beta_2)=var(\frac{\sum_i (\beta_1 + \beta_2 X_i + \epsilon_i -\beta_1 -\beta_2 \bar X-\bar \epsilon) (X_i -\bar X)}{\sum_i (X_i -\bar X)^2} - \beta_2)$
+    \item $=var(\frac{\sum_i [\beta_2(X_i -\bar X) + (\epsilon_i -\bar \epsilon)] (X_i -\bar X)}{\sum_i (X_i -\bar X)^2} -\beta_2)\leftarrow $ (FOIL, distribute $(X_i -\bar X)$)
+    \item $=Var(\frac{\beta_2 \sum_i (X_i-\bar X)^2}{\sum_i (X_i -\bar X)^2} + \frac{\sum_i (\epsilon_i -\bar \epsilon)(X_i -\bar X)}{\sum_i (X_i -\bar X)^2} - \beta_2)$. Now we get $\beta_2 -\beta_2$ which cancels, now we're left with:
+    \item $var(\frac{\sum_i (\epsilon_i -\bar \epsilon)(X_i -\bar X)}{\sum_i (X_i -\bar X)^2})$. Move denominator out (constant)
+    \item $\frac{1}{\sum_i (X_i -\bar X)^2} var(\sum_i (\epsilon_i -\bar \epsilon)(X_i -\bar X))$
+    \item Apply Gauss Markov assumptions (unbiasedness: E[$\epsilon_i] = 0$. Homoskedascity (no serial correlation): $E[\epsilon_i ^2] = \sigma^2, E[\epsilon_i \epsilon_j] = 0$]). These assumptions allows us to pull out variance.
+    \begin{itemize}
+        \item If $E[\epsilon_i \epsilon_j] = 0$ then Var($\sum_i \cdots) = \sum_i var(\cdots)$
+        \item $var(a\cdot \epsilon_i) = a^2 var(\epsilon_i)$
+        \item $var(\sum_i \epsilon_i)=\sum_i var(\epsilon_i)$ only if $\epsilon_i$ are uncorrelated. In this class they will always be uncorrelated $=\frac{\sigma^2}{\sum_i (X_i -\bar X)^2}$
+    \end{itemize}
+    \item $\frac{1}{\sum_i (X_i -\bar X)^2}\sum_i var( (\epsilon_i -\bar \epsilon)(X_i -\bar X))$. We can pull out $\epsilon$ as constant from $\bar \epsilon(X_i - \bar X)$. Recall $\sum_i (X_i - \bar X)=0$. Thus remove the term and simplify
+    \item $\frac{1}{\sum_i (X_i -\bar X)^2}\sum_i var( (\epsilon_i)(X_i -\bar X))$.
+    \item $\frac{1}{(\sum_i (X_i -\bar X)^2)^2} \sum_i (X_i -\bar X) ^2 var(\epsilon_i)$
+    \begin{itemize}
+        \item $var(\epsilon_i) = E[\epsilon_i^2] - (E[\epsilon_i])^2 = \sigma^2 - 0 =\sigma^2$
+    \end{itemize}
+    \item Intuitively. Variance of $\beta_2$ is variance of our $\epsilon$ divided by variance of data points
+\end{itemize}
+
+\subsection{Variance Summary}
+\begin{itemize}
+    \item $var(\hat \beta_2) = \frac{\sigma^2}{n} [\frac{1}{\hat \sigma^2 _X}]$
+    \item $var(\hat \beta_1 ) = \frac{\sigma^2}{n}[1+\frac{\bar X^2}{\hat \sigma^2 _X}]$
+    $cov(\hat \beta_1 ,\hat \beta_2) = \frac{\sigma^2}{n}[\frac{-\bar X}{\hat \sigma^2 _X}]$
+    \item $\sigma^2$: represents variance of $\epsilon$'s
+    Empirical variance: $\hat \sigma^2_X \frac{1}{n} \sum_i (X_i -\bar X)^2 = \hat \sigma_X ^2$
+    \end{itemize}
+
+\subsection{Variance Remarks}
+\begin{itemize}
+    \item Larger $\sigma^2 = E(\epsilon_i ^2) \rightarrow $ Larger $var(\hat \beta_1), var(\hat \beta_2)$
+    \item Larger $\hat \sigma^2 _X \rightarrow $ Smaller $var(\hat \beta_1), var(\hat \beta_2)$
+    \item $var(\hat \beta_1) \geq var(\bar \epsilon)$, equal iff$cov(\hat \beta_1, \hat \beta_2) =0$
+    \item Larger $n\rightarrow $ Smaller $var(\bar \beta_1), var(\hat \beta_2)$ (consistency, Law of Large Numbers)
+\end{itemize}
+
+$\hat \sigma_X ^2$: empirical variance. $=\frac{\sigma^2}{\sum_I (X_i -\bar X)^2}$
+
+\subsection{Covariance between $\hat \beta_1$ and $\hat \beta_2$}
+$cov(z,w) = E[(z-E[z])(w-E[w]))$
+
+\begin{itemize}
+    \item Because betas are unbiased: $cov(\beta_1,\hat \beta_2)=E[(\hat \beta_1 -\beta_1)(\hat \beta_2 -\beta_2)$. Remember: the betas being unbiased is a necessary condition for this
+    \item The covariance should be correlated with $\epsilon$ since it affects both
+\end{itemize}
+
+How to (intuitively) know whether no heteroskedascity is a good assumption
+\begin{itemize}
+    \item Check dispersion of $\epsilon$ around our line. If the dispersion changes, then we have an issue
+\end{itemize}
+
+\subsection{Estimation of $\sigma^2$}
+$E[\epsilon_i ^2 = \sigma^2$. We hope that this good expectation is a good representation of the average: $\frac{1}{n} \sum_i \hat \epsilon_i ^2$. $\hat e_i \rightarrow \hat \epsilon_i$
+\begin{itemize}
+    \item When $\sigma^2$ is unknown
+    \item $s^2 \equiv \hat \sigma^2 = \frac{1}{n-2}\sum \hat e_i ^2 = \frac{1}{n-2} \sum(Y_i -\hat \beta_1 -\hat \beta_2 X_i)^2$ (n-2 degrees of freedom, because $\hat \beta_1, \hat \beta_2$)
+    \item It can be shown that 
+\end{itemize}
+
+\subsection{Gauss-Markov Theorem}
+When we have betas with hats, we assume they are outputs for OLS regression.
+$(\hat \beta_1, \hat \beta_2)$ are BLUE (Best Linear Unbiased Estimators) of ($\beta_1, \beta_2$)
+\begin{itemize}
+    \item That is, for any $k_1$ and $k_2 \in \R$, if $\tilde \beta_1$ and $\tilde \beta_2$ are any linear unbiased estimators of $(\beta_1,\beta_2)$
+    \begin{itemize}
+        \item $var(k_1\hat \beta_1 + k_2 \hat \beta_2) \leq var(k_1 \tilde \beta_1 + k_2 \tilde \beta_2)$
+    \end{itemize}
+\end{itemize}
 
 \section{Terminology}
 \begin{itemize}
