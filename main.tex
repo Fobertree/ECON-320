@@ -9,6 +9,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\Cdot}{\boldsymbol{\cdot}}
+\newcommand{\iidsim}{\overset{\text{iid}}{\sim}}
 
 \newtheorem{thm}{Theorem}
 \newtheorem{defn}{Definition}
@@ -55,11 +56,11 @@
 \begin{itemize}
     \item Derivative of CDF is PDF ($f_X(x)=\frac{dF(x)}{dx})$, integral of PDF is CDF ($F_X(x)=\int^x_{-\infty} f_X(z)dz$)
     \item A pdf can have values \textbf{GREATER} than 1, but cdf \textbf{MUST} sum to $1$
-    \item Proerties of Probability Density Functions (pdf):
+    \item Properties of Probability Density Functions (pdf):
     \begin{itemize}
         \item $f_X(x)\geq 0,$ and either
         \item $\sum^n_{i=1}f_X(x_i)=1$ (discrete)
-        \item $\int^{\infty}_{\-infty} f_X(x)dx = 1$ (continuous)
+        \item $\int^{\infty}_{\-\infty} f_X(x)dx = 1$ (continuous)
     \end{itemize}
 \end{itemize}
 \subsection{Expected Values}
@@ -421,7 +422,7 @@ $E[\epsilon_i ^2 = \sigma^2$. We hope that this good expectation is a good repre
 \begin{itemize}
     \item When $\sigma^2$ is unknown
     \item $s^2 \equiv \hat \sigma^2 = \frac{1}{n-2}\sum \hat e_i ^2 = \frac{1}{n-2} \sum(Y_i -\hat \beta_1 -\hat \beta_2 X_i)^2$ (n-2 degrees of freedom, because $\hat \beta_1, \hat \beta_2$)
-    \item It can be shown that 
+    \item \textbf{It can be shown that ????????}
 \end{itemize}
 
 \subsection{Gauss-Markov Theorem}
@@ -430,9 +431,183 @@ $(\hat \beta_1, \hat \beta_2)$ are BLUE (Best Linear Unbiased Estimators) of ($\
 \begin{itemize}
     \item That is, for any $k_1$ and $k_2 \in \R$, if $\tilde \beta_1$ and $\tilde \beta_2$ are any linear unbiased estimators of $(\beta_1,\beta_2)$
     \begin{itemize}
-        \item $var(k_1\hat \beta_1 + k_2 \hat \beta_2) \leq var(k_1 \tilde \beta_1 + k_2 \tilde \beta_2)$
+        \item $var(k_1\hat \beta_1 + k_2 \hat \beta_2) \leq var(k_1 \tilde \beta_1 + k_2 \tilde \beta_2)$ (minimize variance)
     \end{itemize}
 \end{itemize}
+
+\subsection{Gauss-Markov Assumptions}
+{Assumptions from Unbiasedness}
+\begin{itemize}
+    \item $E[\epsilon_i] = 0$
+    \item $E[\hat \beta_1] = \beta_1$
+    \item $E[\hat \beta_2] = \beta_2$
+\end{itemize}
+{No serial correlation/homoskedascity}
+\begin{itemize}
+    \item $E[\epsilon_i\epsilon_j] = 0 \leftarrow $ no serial correlation
+    \item $E[\epsilon_i^2] = \sigma^2 \leftarrow $ homoskedascity
+\end{itemize}
+The Gauss-Markov Assumptions are weak
+\begin{itemize}
+    \item Gauss-Markov only cares about distributions where mean = 0 and any variance (not type of variation). If these conditions apply we can throw Gauss-Markov assumptions at it.
+\end{itemize}
+
+\subsection{How good is the fit? (Introducing $R^2$)}
+One measure: $RSS\equiv \sum(Y_i-\hat Y_i)^2 = \sum(Y_i -\hat \beta_1 -\hat \beta_2X_i)^2 = \sum \hat e_i^2$
+\begin{itemize}
+    \item RSS is the ``Residual Sum of Squares"
+    \item Problem with RSS: It depends on units - if $(Y_i, X_i)$ all multiplied by some (scalar) $K$, RSS multiplied by $K^2$. It quadratically blows up values, needs to be normalized. TSS can accomplish this. (``invariant to scale")
+\end{itemize}
+Difference between RSS and TSS: $\hat Y$ vs $\bar Y$.
+\begin{itemize}
+    \item The RSS is what you \textbf{CANNOT} explain with your model. It contains the residuals
+    \begin{itemize}
+        \item $ESS$ (``Explained Sum of Squares") = $TSS-RSS$
+    \end{itemize}
+    \item TSS does not care about X values (intuitively think that all Y points are projected onto Y-axis and differences are summers and squared)
+\end{itemize}
+
+Better measure: normalize measure
+\begin{itemize}
+\item Let $TSS=\sum (Y_i -\bar Y)^2 \equiv n\hat \sigma^2 _Y,$ where TSS is the ``Total Sum of Squares", then:
+    \item $R^2\equiv 1-\frac{RSS}{TSS}$ measures ``goodness of fit"
+    \item $R^2$ is intuitively a value that tells you how good your linear assumption is
+    \begin{itemize}
+        \item From a minimization perspective, $\hat \beta = argmin_\beta, $ where we minimize $R^2$, the ``Residual Sum of Squares"
+    \end{itemize}
+\end{itemize}
+
+\subsection{Variance Decomposition: (Why $R^2$ is reasonable)}
+RECALL: Normal Equations (Derivation of OLS Estimators)
+\begin{itemize}
+    \item $\frac{1}{n} \sum_{i=1} ^n \hat \epsilon_i = 0$. By construction, the sum of residuals after we do OLS is 0
+    \begin{itemize}
+        \item The sum of squares of residuals are minimized by OLS. If we get the residuals (NOT SQUARED) and sum them, the total will be 0
+    \end{itemize}
+    \item $\frac{1}{n}\sum_i X_i \hat \epsilon_i = 0$
+\end{itemize}
+
+\begin{itemize}
+    \item $TSS=\sum_i (Y_i -\bar Y) = \text{add and subtract $\hat Y_i$}\sum(Y_i-\hat Y_i + \hat Y_i -\hat Y)^2 \text{ \textbf{(FOIL)} }= $\\
+    $=\sum(Y_i - \hat Y_i)^2 + \sum(\hat Y_i -\bar Y)^2 + 2\sum(Y_i -\hat Y_i) (\hat Y_i -\bar Y)$ (\textbf{LAST TERM: } $2\sum(Y_i -\hat Y_i) (\hat Y_i -\bar Y)$ is gone because of 2nd normal equation)
+    \begin{itemize}
+        \item Decompose this to $TSS =\sum(Y_i - \hat Y_i)^2 + \sum(\hat Y_i -\bar Y)^2$, which represents $TSS = RSS + ESS$
+    \end{itemize}
+    \item But $\sum(Y_i -\hat Y_i) (\hat Y_i)-\bar Y)=\sum \hat e_i (\hat Y_i -\hat Y)=$ (\textbf{Plug in} $\hat Y_i = \hat \beta_1 + \hat \beta_2 X_i$ \textbf{and} $\bar Y = \hat \beta_1 + \hat \beta_2 \bar X$)\\
+    $=\sum \hat e_i (\hat \beta_1 + \hat \beta_2 X_i - \bar Y)=$\\
+    $=\sum \hat e_i[\hat \beta_2 (X_i -\bar X)]$ since $\hat \beta_1 =\bar Y-\hat \beta_2 \bar X$\\
+    $=\hat \beta_2 \{\sum\hat e_i X_i -\bar X\sum\hat e_i\}=$\\
+    $=0$ by the normal equations
+\end{itemize}
+
+Thus $TSS = \sum - \sum(Y_i -\hat Y_i)^2 + \sum(\hat Y_i -\bar Y)^2 = RSS+ESS$\\
+where ESS is the ``Explained Sum of Squares", as explained by the regression, while the RSS, or ``Residual Sum of Squares" is the variation in Y that is not explained by the regression. 
+
+[Total Sum of Squares = Residual Sum of Squares + Explained Sum of Squares]
+
+Thus
+$$R^2 = 1 -\frac{RSS}{TSS} = \frac{TSS-RSS}{TSS}=\frac{ESS}{TSS}$$
+
+Important formula (considering the variables that form the `relationship' in this equation):
+$$R^2 = \frac{ESS}{TSS}=\frac{\frac{1}{n} ESS}{\hat \sigma^2 _Y} =\hat \beta_2 ^2 (\frac{\hat \sigma^2 _X}{\hat \sigma ^2 _X})$$
+
+Why define $R^2$ as $\frac{ESS}{TSS}=1-\frac{RSS}{TSS}$, and not just as $R^2 = r^2_{XY}?$
+\begin{itemize}
+    \item It would break in multiple regression
+\end{itemize}
+
+\begin{itemize}
+    \item $E[\epsilon_i] = 0, E[\epsilon_i \epsilon_j ] = 0, E[\epsilon_i ^2 ] = \sigma^2$
+\end{itemize}
+
+\section{The Linear Model with Gaussian Errors}
+Before:
+\begin{itemize}
+    \item We claimed we could fit a Normal Linear Model: $Y_i = \beta_1 + \beta_2 X_i +\epsilon_i \leftarrow$ $min_{\beta_1,\beta_2} \sum_i (Y_i -\beta_1 -\beta_2 X_i)^d$, $E[\epsilon_i] = 0$
+    \begin{itemize}
+        \item As long as $\epsilon_i \overset{\text{iid}}{\sim} N(0,\sigma^2)$ (iid meant uncorrelated, error can be fit into a normal distribution)
+    \end{itemize}
+    \item With this assumption, the OLS estimators $\hat \beta_1,\hat \beta_2$ are the \textbf{minimum variance unbiased estimators} (MVUE). That is, they have minimum variance among the class of all unbiased estimators, whether linear or not. his is stronger than being BLUE, which is restricted to linear estimators
+    \item The OLS estimator is the best linear, unbiased estimator (BLUE)
+    \item If we prove that our data is unbiased, without serial correlation, with error fitting into Gaussian Distribution, we have MVUE?
+
+\end{itemize}
+
+\section{Distribution of $\hat \beta_1, \hat \beta_2$}
+\begin{itemize}
+    \item If $\epsilon_i \overset{iid}{\sim} N (0, \sigma^2)$
+    \item $\hat \beta_ 2 = f(x_i, y_i) \leftrightarrow Y_i = \beta_1 + \beta_2X_i + \epsilon_i$
+    \item How does the distribution of $\epsilon_i$ affect the distribution of $\hat \beta_2$?
+    \begin{itemize}
+        \item It is a normal distribution (`sums of normals are normals': linear functions of gaussian are gaussian). This also transfers to $Y_i$
+        \item We now know both $\hat \beta_1,\hat \beta_2$ are normally distributed
+    \end{itemize}
+    \item Unbiasedness: ope ($E[\hat \beta_2 ] = \beta_2$)
+    \item $\hat \beta_2 \sim N(0, \frac{\sigma}{}$We expect to get the correct $sl^2{n})$
+    \item $\hat \beta_1 \sim N(\beta_1, \frac{\sigma^2}{n}(1 + \frac{X^2}{\hat \sigma ^2 _X}))$
+    \item We want $\hat \beta_2 \sim N(\beta_2, Var(\hat \beta_2))$. Problem: seems circular, we need the estimator itself.$\hat \beta_2 \rightarrow f(\hat \beta_2, X_i, Y_i ) \sim N(0,1)$
+    \item $\hat \beta_2 \sim N(\beta_2, var(\hat \beta_2)) = N(\beta_2, \frac{\sigma^2}{n} (\frac{1}{\hat \sigma^2 _X}))$
+    \item $\frac{\hat \beta_2 - \beta_2}{\sqrt{\frac{\sigma^2}{n} (\frac{1}{\hat \sigma^2_X})}}$. The denominator here is called ``standard error''
+    \begin{itemize}
+        \item This is achieved by normalizing $N(\beta_2, Var(\hat \beta_2)) \rightarrow N(0,1)$
+        \item Subtract $\beta_2$ to normalize the mean, divide by square root of variance of $\hat \beta_2$. 
+        \item The square root of the variance of the OLS estimator (the denominator) is called the standard error: $\hat \beta_2$
+        \item Is the $\sigma^2$ a problem? No, we can estimate it (replace it with $s^2$, see `Estimation of $\sigma^2$'
+        \item We have an estimator for $\beta_2$, so we can test for specific values to see if $\hat \beta_2 \neq \beta_2$. For example, we can plug in $\beta_2 = 0$. If we see the resulting data not fitting ($\sim N(0,1)$), then we can reject the premise that $\hat \beta_2 = \beta_2$
+        \item When we sub in $s^2$ for $\sigma^2$, we affect the distribution since $s^2$ since $s^2$ has its own distribution.
+        \begin{itemize}
+            \item If we know $\sigma^2$ then we are fine
+            \item If we don't, we need to estimate it via $s^2$
+            \item $s^2$ is \textbf{NOT} a Gaussian Distribution, because of the squared term. It is a \textbf{Chi-Square Distribution} (with n-2 degrees of freedom)
+            \item What is a Chi-Square? (number 3 of `Useful Results')
+            \begin{itemize}
+                \item Gaussian distribution can have negative values. Chi-Square only supports non-negative numbers (due to it being squared)
+            \end{itemize}
+            \item Using Number 4 of `Useful Results', we find that we have standard error fitting the t-distribution?
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Estimation of $\sigma^2$}
+\begin{itemize}
+    \item As before, $s^2 \equiv \frac{1}{n-2} \sum (Y_i -\hat \beta_1 -\hat \beta_2 X_i)^2$
+    \begin{itemize}
+        \item We assume that via Law of Large Numbers, we get $E[\epsilon_i^2] = \sigma^2$
+    \end{itemize}
+\end{itemize}
+
+\subsection{Standard Error of $\hat \beta_1, \hat \beta_2$}
+\begin{itemize}
+    \item The Standard Error is the square root of the estimated variance
+    \item $SE(\hat \beta_1) = \sqrt{\frac{s^2}{n} (1+ \frac{\bar X}{\hat \sigma^2_X})}$
+    \item \textbf{IMPORTANT:} If I know my $\sigma^2$, we have a standard normal distribution. If I don't know my $\sigma^2$ (have to estimate it), it is a t-distribution
+    \item t-ratio: $t\equiv \frac{\hat \beta_2 - \beta_2}{SE(\hat \beta_2)}=\frac{\hat \beta_2 - \beta_2}{\sqrt{\frac{\sigma^2}{n} (\frac{1}{\hat \sigma ^2_X})}} / \frac{s^2}{\sigma^2} = \frac{Z}{\sqrt{W/(n-2)}}$\\
+    where $Z\sim N(0,1),W\sim \chi_{n-2}^2$ (related to Useful Results 3), with Z, W independent
+    \item So $\frac{\hat \beta_2 - \beta_2}{SE(\hat \beta_2)} \sim t_{n-2}$ (See Useful Results 4). Similarly for $\hat \beta_1$. n-2 because of 2 degrees of freedom (remember two beta estimators)
+\end{itemize}
+
+
+Setup: do linear prediction, put a line through, have good properties of the line (gauss markov is all i need)
+
+
+\section{Non-normal Errors}
+\begin{itemize}
+    \item $\hat \beta_2 = \frac{\sum_i (Y_i - \bar Y)(X_i - \bar X)}{\sum _i (X_i -\bar X)^2}$
+    \item $\hat \beta_2 = \beta_2 + \frac{\sum_i (X_i - \bar X) \epsilon_i}{ \sum_i (X_i - \bar X)^2}$
+    \begin{itemize}
+        \item Multiply everything by $\frac{1}{\sqrt n}$
+        \item As $n\rightarrow \infty$,the fraction becomes zero. The Numerator converges to a normal distribution $N(0, Var(\epsilon_i))$ because $\epsilon_i$ is normally distributed
+        \item If we scale both sides by $\frac{1}{\sqrt n}$, we allude to Central Limit Theorem, so with no unbiasedness, no homoskedascity, no serial correlation (Gauss-Markov assumptions), we have a normal distribution, proving the central limit theorem for $\hat \beta_2$
+    \end{itemize}
+    \item Even if errors are non-normal, as we have infinitely many points, then we approach a normal distribution for our beta estimators
+    \item By a generalization of the Central Limit Theorem, as long as \{$\epsilon_i$\} are iid\\
+    $\hat \beta_1 \overset{a}{\sim} N(\beta_1, \frac{\sigma^2}{n}(1+ \frac{\bar X^2}{\hat \sigma^2 _X})$ and $\hat \beta_2 \overset{a}{\sim} N(\beta_2, \frac{\sigma^2}{n} (\frac{1}{\hat \sigma^2 _X}))$
+    \item where ``a" refers to asymptotically or in the limit as $n\rightarrow \infty$
+    \item Also, since $\underset{n\rightarrow \infty}{lim \text{ }s^2} = \sigma^2$
+    \item $\frac{\hat \beta_1 -\beta_1}{SE(\hat \beta_1)} \overset{a}{\sim}$
+\end{itemize}
+
+OLS: minimize sum of squares via gauss markov assumptions, testing by assuming gaussian distribution, have a `pivot' so we can estimate beta
 
 \section{Terminology}
 \begin{itemize}
@@ -453,10 +628,93 @@ $(\hat \beta_1, \hat \beta_2)$ are BLUE (Best Linear Unbiased Estimators) of ($\
     \item Variance: ``dispersion around the mean"
 \end{itemize}
 
+\section{Hypothesis Testing}
+\begin{itemize}
+    \item Hypothesis: An assumption about distribution of ``population"
+    \item Objective of hypothesis testing: Given a random sample from a population, is there enough evidence to contradict some assertion about that population? (Karl Popper: science can only be done by proving yourself wrong)
+    \item Null hypothesis ($H_0$): The statement to be tested; often the hypothesis of ``no effect" or ``no relationship"
+    \item Alternative hypothesis ($H_A$): some other possibilities than the null hypothesis, e.g. ``some effect" or ``some positive effect''
+    \item We have one-sided and two-sided hypothesis tests, which influence our null and alternative hypotheses
+    \item Where do $H_0, H_A$ come from?
+    \begin{itemize}
+        \item Prior research, theoretical expectations, etc.
+    \end{itemize}
+    \item Possible States of Nature: ``$H_0$" is either true or false
+\end{itemize}
+Types of Error
+\vspace{0.1in}
+
+\begin{tabular}{ | c | c | c| }
+\hline
+Decision/Nature & $H_0$ True & $H_0$ false\\
+\hline
+Accept $H_0$ & Correct decision & Type II error\\
+\hline
+Reject $H_0$ & Type I error & Correct decision\\
+\hline
+\end{tabular}
+\begin{itemize}
+    \item False positive: Type I error
+    \begin{itemize}
+        \item We consider this to be more severe.
+    \end{itemize}
+    \item False negative: Type II error
+\end{itemize}
+We can think of the p-value as the percentage of times we may commit a Type I error
+\begin{itemize}
+    \item Example: If we have alpha value $\alpha = 0.05$, this means the probability of making a Type I error is 5\%)
+\end{itemize}
+Other terms
+\begin{itemize}
+    \item Significance level: $\alpha = P(\text{Type I }| H_0\text{ true})$
+    \item Confidence Level: $1-\alpha = P(\text{Accept }H_0 | H_0\text{ true})$
+    \item ``Operating characteristic": $\beta = P(\text{Type II } | H_0 \text{false})$
+\end{itemize}
+
+\subsection{Hypothesis Testing: The test of significance approach}
+Assumption (for now): $\epsilon_i \overset{iid}{\sim} N(0, \sigma^2), \sigma^2 unknown$
+Contains Gauss-Markov assumptions
+\begin{itemize}
+    \item Unbiased: $E[\epsilon_i] = 0$
+    \item No serial correlation: $E[\epsilon_i\epsilon_j] = 0$
+    \item $E[\epsilon_i ^2] = \sigma^2$
+    \item $X_i$ deterministic
+    \begin{itemize}
+        \item $E[\epsilon_i X_i ] = 0$
+        \item $X_i E[\epsilon_i] = 0$
+    \end{itemize}
+\end{itemize}
+Our next job is to turn statistics into proving the assumptions\\
+Recall:
+\begin{itemize}
+    \item $\hat \beta_2 \sim N(\beta_2, Var(\hat \beta_2))$
+    \item $\hat \beta_2 - \beta_2 \sim N(0, Var(\hat \beta_2))$
+    \item $\frac{\hat \beta_2 - \beta_2}{\sqrt{Var(\hat \beta_2}} \sim N(0,1)$. We call the denominator the standard error of $\hat \beta_2$ ($SE[\hat \beta_2]$)
+\end{itemize}
+If our Gauss-Markov assumptions are correct: $\frac{\hat \beta_2 - \beta_2}{SE(\hat \beta_2) \sim t_{n-2}}$ and $\frac{\hat \beta - \beta_1}{SE(\hat \beta_1)} \sim t_{n-2}$
+\begin{itemize}
+    \item If the value of $\beta_2 (\beta_1)$ is specified under the null hypothesis, the t-value can be obtained from the sample, and can serve as a test statistic (a random variable that allows you to test a hypothesis). Since this test statistic follows the t-distribution, we can make confidence interval statements as follows:
+    \begin{itemize}
+        \item $P\left(-t_{dof, \frac{\alpha}{2}} \leq \frac{\hat \beta_2 - \beta^*_2}{SE(\hat \beta_2)}\leq t_{dof, \frac{\sigma}{2}}\right) = 1- \alpha$
+        \begin{itemize}
+            \item Where $\beta_2^*$ is a value of $\beta_2$ under $H_0$ and $-t_{dof, \frac{\sigma}{2}}, t_{dof, \frac{\sigma}{2}}$ are ``critical" t-values from t-table for $\alpha$ level of significance and $n-2$ degrees of freedom
+        \end{itemize}
+        \item Rearrange
+        \item $P\left(\beta^*_2 - t_{dof, \frac{\sigma}{2}} SE(\hat \beta_2 ) \leq \hat \beta_2 \leq \beta_2 ^* + t_{dof, \frac{\sigma}{2}} SE(\hat \beta_2)\right) = 1-\alpha$
+    \end{itemize}
+\end{itemize}
+\textbf{IMPORTANT:} $t = \frac{\hat \beta_2 - \beta^* _2}{\sqrt{Var(\hat \beta)}}$
+\begin{itemize}
+    \item If $\hat \beta_2 - \beta_2^* \neq 0$, we probably have the wrong $\beta$
+    \item \textbf{In other words:} The further $\hat \beta_2$ is away from our initial guess $\beta_2 ^*$, and the smaller $SE(\hat \beta_2)$, the larger $|t|$ (focus on absolute value, since t can be positive or negative). How large is large enough to reject some $H_0$ depends on the choice of level of significant and the dof
+    \item \textbf{The larger the difference, the greater the t statistic is}
+\end{itemize}
+
 
 \section{Bonus (not in class)}
 \begin{itemize}
     \item Copulas
     \item Jensen's inequality
+    \item Semiparametric: distribution does not have every parameter parametized
 \end{itemize}
 \end{document}
