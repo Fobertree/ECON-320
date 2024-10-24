@@ -387,11 +387,11 @@ Variance of $\hat \beta_2: var(\hat \beta_2) = E[(\hat \beta_2 - \beta_2 )^2] \r
 
 \subsection{Variance Summary}
 \begin{itemize}
-    \item $var(\hat \beta_2) = \frac{\sigma^2}{n} [\frac{1}{\hat \sigma^2 _X}]$
-    \item $var(\hat \beta_1 ) = \frac{\sigma^2}{n}[1+\frac{\bar X^2}{\hat \sigma^2 _X}]$
-    $cov(\hat \beta_1 ,\hat \beta_2) = \frac{\sigma^2}{n}[\frac{-\bar X}{\hat \sigma^2 _X}]$
+    \item $var(\hat \beta_2) = \frac{\sigma^2}{n} \left[\frac{1}{\hat \sigma^2 _X}\right]$
+    \item $var(\hat \beta_1 ) = \frac{\sigma^2}{n}\left[1+\frac{\bar X^2}{\hat \sigma^2 _X}\right]$
+    $cov(\hat \beta_1 ,\hat \beta_2) = \frac{\sigma^2}{n}\left[\frac{-\bar X}{\hat \sigma^2 _X}\right]$
     \item $\sigma^2$: represents variance of $\epsilon$'s
-    Empirical variance: $\hat \sigma^2_X \frac{1}{n} \sum_i (X_i -\bar X)^2 = \hat \sigma_X ^2$
+    Empirical variance: $\hat \sigma^2_X  = \frac{1}{n} \sum_i (X_i -\bar X)^2$
     \end{itemize}
 
 \subsection{Variance Remarks}
@@ -408,7 +408,7 @@ $\hat \sigma_X ^2$: empirical variance. $=\frac{\sigma^2}{\sum_I (X_i -\bar X)^2
 $cov(z,w) = E[(z-E[z])(w-E[w]))$
 
 \begin{itemize}
-    \item Because betas are unbiased: $cov(\beta_1,\hat \beta_2)=E[(\hat \beta_1 -\beta_1)(\hat \beta_2 -\beta_2)$. Remember: the betas being unbiased is a necessary condition for this
+    \item Because betas are unbiased: $cov(\hat \beta_1,\hat \beta_2)=E[(\hat \beta_1 -\beta_1)(\hat \beta_2 -\beta_2)$. Remember: the betas being unbiased is a necessary condition for this
     \item The covariance should be correlated with $\epsilon$ since it affects both
 \end{itemize}
 
@@ -418,7 +418,7 @@ How to (intuitively) know whether no heteroskedascity is a good assumption
 \end{itemize}
 
 \subsection{Estimation of $\sigma^2$}
-$E[\epsilon_i ^2 = \sigma^2$. We hope that this good expectation is a good representation of the average: $\frac{1}{n} \sum_i \hat \epsilon_i ^2$. $\hat e_i \rightarrow \hat \epsilon_i$
+$E[\epsilon_i] ^2 = \sigma^2$. We hope that this good expectation is a good representation of the average: $\frac{1}{n} \sum_i \hat \epsilon_i ^2$. $\hat e_i \rightarrow \hat \epsilon_i$
 \begin{itemize}
     \item When $\sigma^2$ is unknown
     \item $s^2 \equiv \hat \sigma^2 = \frac{1}{n-2}\sum \hat e_i ^2 = \frac{1}{n-2} \sum(Y_i -\hat \beta_1 -\hat \beta_2 X_i)^2$ (n-2 degrees of freedom, because $\hat \beta_1, \hat \beta_2$)
@@ -445,7 +445,7 @@ $(\hat \beta_1, \hat \beta_2)$ are BLUE (Best Linear Unbiased Estimators) of ($\
 {No serial correlation/homoskedascity}
 \begin{itemize}
     \item $E[\epsilon_i\epsilon_j] = 0 \leftarrow $ no serial correlation
-    \item $E[\epsilon_i^2] = \sigma^2 \leftarrow $ homoskedascity
+    \item $E[\epsilon_i^2] = \sigma^2 \leftarrow $ homoskedascity (constant variance)
 \end{itemize}
 The Gauss-Markov Assumptions are weak
 \begin{itemize}
@@ -542,7 +542,7 @@ Before:
         \item It is a normal distribution (`sums of normals are normals': linear functions of gaussian are gaussian). This also transfers to $Y_i$
         \item We now know both $\hat \beta_1,\hat \beta_2$ are normally distributed
     \end{itemize}
-    \item Unbiasedness: ope ($E[\hat \beta_2 ] = \beta_2$)
+    \item Unbiasedness: hope ($E[\hat \beta_2 ] = \beta_2$)
     \item $\hat \beta_2 \sim N(0, \frac{\sigma}{}$We expect to get the correct $sl^2{n})$
     \item $\hat \beta_1 \sim N(\beta_1, \frac{\sigma^2}{n}(1 + \frac{X^2}{\hat \sigma ^2 _X}))$
     \item We want $\hat \beta_2 \sim N(\beta_2, Var(\hat \beta_2))$. Problem: seems circular, we need the estimator itself.$\hat \beta_2 \rightarrow f(\hat \beta_2, X_i, Y_i ) \sim N(0,1)$
@@ -609,24 +609,6 @@ Setup: do linear prediction, put a line through, have good properties of the lin
 
 OLS: minimize sum of squares via gauss markov assumptions, testing by assuming gaussian distribution, have a `pivot' so we can estimate beta
 
-\section{Terminology}
-\begin{itemize}
-    \item Random Variable (R.V.): random variable X is a function from some sample space onto the real line; a function $X: \Omega \rightarrow \R$, where $\Omega$ is an abstract space
-    \item Discrete R.V.: X takes on one of a finite or countably infinite (ie. the integers) number of values
-    \item Continuous R.V.: $P\{X=x\}=0, \forall x \in \R$
-    \item Probability Density function (aka probability mass function, pdf, $f_x(X)$)
-    \item Uniform Discrete Distribution
-    \item Cumulative Distribution Function (cdf, $F_x(X)$): 
-    \begin{itemize}
-        \item Given R.V. $X$, 
-        \begin{itemize}
-            \item $F_X(x) = F(x)=P\{X\leq x\}\Rightarrow P\{a<X\leq b\}=F(b)-F(a) \text{ if } b> a$, 
-            \item Random variables in capital letters,``values" in lower-case
-        \end{itemize}
-        
-    \end{itemize}
-    \item Variance: ``dispersion around the mean"
-\end{itemize}
 
 \section{Hypothesis Testing}
 \begin{itemize}
@@ -695,7 +677,7 @@ If our Gauss-Markov assumptions are correct: $\frac{\hat \beta_2 - \beta_2}{SE(\
 \begin{itemize}
     \item If the value of $\beta_2 (\beta_1)$ is specified under the null hypothesis, the t-value can be obtained from the sample, and can serve as a test statistic (a random variable that allows you to test a hypothesis). Since this test statistic follows the t-distribution, we can make confidence interval statements as follows:
     \begin{itemize}
-        \item $P\left(-t_{dof, \frac{\alpha}{2}} \leq \frac{\hat \beta_2 - \beta^*_2}{SE(\hat \beta_2)}\leq t_{dof, \frac{\sigma}{2}}\right) = 1- \alpha$
+        \item $P\left(-t_{dof, \frac{\alpha}{2}} \leq \frac{\hat \beta_2 - \beta^*_2}{SE(\hat \beta_2)}\leq t_{dof, \frac{\sigma}{2}}\right) = 1- \alpha$ (2-tailed)
         \begin{itemize}
             \item Where $\beta_2^*$ is a value of $\beta_2$ under $H_0$ and $-t_{dof, \frac{\sigma}{2}}, t_{dof, \frac{\sigma}{2}}$ are ``critical" t-values from t-table for $\alpha$ level of significance and $n-2$ degrees of freedom
         \end{itemize}
@@ -708,13 +690,538 @@ If our Gauss-Markov assumptions are correct: $\frac{\hat \beta_2 - \beta_2}{SE(\
     \item If $\hat \beta_2 - \beta_2^* \neq 0$, we probably have the wrong $\beta$
     \item \textbf{In other words:} The further $\hat \beta_2$ is away from our initial guess $\beta_2 ^*$, and the smaller $SE(\hat \beta_2)$, the larger $|t|$ (focus on absolute value, since t can be positive or negative). How large is large enough to reject some $H_0$ depends on the choice of level of significant and the dof
     \item \textbf{The larger the difference, the greater the t statistic is}
+    \begin{itemize}
+        \item \textbf{Important intuition:} $t$-statistic is ratio of distance between predicted beta and actual beta compared to normalized variance of beta parameter
+        \begin{itemize}
+            \item $|t| = \frac{\hat \beta_2 -\beta_2 ^*}{\sqrt{Var(\hat \beta_2)}}$
+        \end{itemize}
+    \end{itemize}
+    \item Summary of decision rules\\\\
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Type of hypothesis & $H_0$ & $H_A$ & Decision: Reject $H_0$ if \\
+        \hline
+        two-sided & $\theta = \theta^*$ & $\theta \neq \theta^*$ & $|t| > t_{dof, \frac{\alpha}{2}}$\\
+        \hline
+        one-sided (right tail) & $\theta = \theta^*$ & $\theta > \theta^*$ & $t > t_{dof, \alpha}$\\
+        \hline
+        one-sided (left tail)& $\theta = \theta^*$ & $\theta < \theta^*$ & $t < -t_{dof, \alpha}$\\
+        \hline
+    \end{tabular}
+    \item Alternatives
+    \begin{itemize}
+        \item $\epsilon_i \overset{iid}{\sim} N(0, \sigma^2), \sigma^2$ known $\Rightarrow$ use $N(0,1)$
+        \item Asymptotically $(n\rightarrow \infty) \Rightarrow N(0,1)$
+    \end{itemize}
 \end{itemize}
+A linear regression implicitly does an ANOVA (analysis of variance), basically a t-test on a coefficient
 
-
-\section{Bonus (not in class)}
+\subsection{Relationship or $R^2 = r^2 _{XY}$ to t-test}
 \begin{itemize}
-    \item Copulas
-    \item Jensen's inequality
-    \item Semiparametric: distribution does not have every parameter parametized
+    \item Sum of squares that entire the $R^2$ and their dof in an \textbf{analysis of variance (ANOVA)} approach:
+    \item Remember that $R^2 = \frac{ESS}{TSS} = 1- \frac{RSS}{TSS}$
+    \item $RSS = \sum (Y_i - \hat Y_i)^2$ has n-2 dof
+    \item $ESS = \sum (\hat Y_i - \bar Y)^2=\hat \beta_2 ^2 \sum (X_i - \bar X)^2$ has 1 dof (since X's are fixed, only $\hat \beta_2$ varies as sample changes)
+    \begin{itemize}
+        \item Not going over derivation in class (5-10 min?)
+    \end{itemize}
+    \item Linear regression model and \textbf{ONLY UNDER THE TEST $\beta_2$ AND $H_A : \beta\neq 0$} (two-tailed), can we use the following test:
+    \item To test $H_0 : \beta_2 = 0$ vs $H_A:\beta_2 \neq 0$, would reject if
+    \begin{itemize}
+        \item $\left| \frac{\hat \beta_2}{SE(\hat \beta_2-0)}\right | > t_{dof,\frac{\alpha}{2}}$
+        \begin{itemize}
+            \item Can also reject if $(n-2)\frac{R^2}{1-R^2} > F_{1,n-2,\alpha}$ since \\ $(n-2) \frac{R^2}{1-R^2} = (n-2) \frac{ESS/TSS}{RSS/TSS} = \frac{ESS}{\frac{1}{n-2} RSS} = \frac{\hat \beta_2 ^2 \sum(X_i - \bar X)^2}{\frac{1}{n-2} \sum (Y_i - \hat Y_i )^2} = \frac{\hat \beta_2 ^2 \sum (X_i - \bar X)^2}{\frac{1}{n-2} \sum (Y_i -\hat \beta_1 -\hat \beta_2 X_i )^2} = \frac{\hat \beta_2 ^2}{\frac{s^2}{n} \frac{1}{\hat \sigma_X ^2}} = \left(\frac{\hat \beta_2}{SE(\hat \beta_2)}\right)^2$
+            \item A F-test is a squared t-distribution
+            \item and (\textbf{IMPORTANT}) $F_{1,n-2,\alpha} = (t_{n-2, \frac{\alpha}{2}})^2$
+            \item That is, $\frac{(n-2)}{1}\frac{R^2}{1-R^2} \sim F_{1,n-2}$ under $H_0$
+            \item This is valid \textbf{only} under this specific $H_0$ and $H_1$ in a regression with intercept. Why do this in addition to t-test? Useful when have multiple regressors
+            \item With the \textbf{F-test, we can only test two-sided alternatives}, because when we square the t-statistic, we CANNOT tell whether the original t-statistic was negative or positive
+        \end{itemize}
+    \end{itemize}
 \end{itemize}
+
+\subsection{General F-test approach}
+\begin{itemize}
+    \item Joint hypothesis: $H_0 : \beta_1 = \beta_1 ^*$ and $\beta_2 = \beta_2 ^*$ vs.\\ $H_1: \beta_1 \neq \beta_1 ^*$ and/or $\beta_2 \neq \beta_2^*$
+    \item \textbf{Important: F-test alternative always ``two-sided"}\\
+    \begin{tabular}{|c|c|c|}
+        \hline
+         & one-sided allowed & only two-sided \\
+         \hline
+         only single variable ($\beta_1, \beta_2$) & t-test & t-test/F-test \\
+         \hline
+         multiple variables with multiple hypotheses & ?? & F-test\\
+         \hline
+    \end{tabular}
+    \begin{itemize}
+        \item t-tests are marginal distributions $\hat \beta_1, \hat \beta_2$
+        \item F-test uses joint distributions (of normal distributions)
+        \item Marginal distributions are Gaussian here. t-tests use marginal distributions
+    \end{itemize}
+    \item Computation of F-statistic:
+    \begin{itemize}
+        \item Compute $RSS_U$ (unrestricted) by estimating $\hat \beta_1, \hat \beta_2$ under alternative hypothesis (ie, unrestricted) $\Rightarrow RSS_U = \sum (Y_i -\hat \beta_1 -\hat \beta_2 X_i )^2$
+        \begin{itemize}
+            \item The restriction comes from $H_0$ (we pretend the null hypothesis is true when testing against it). Our $RSS$ is unrestricted because we have conducted our tests and rejected the null hypothesis
+        \end{itemize}
+        \item Compute $RSS_R$ by imposing null hypothesis restrictions and estimating any unrestricted parameters
+        \begin{itemize}
+            \item RSS is restricted: Solving OLS with an additional restriction (the null hypothesis)
+            \item \textbf{Example:} $H_0:\beta_2 = 0$ vs $H_A:\beta_2 \neq 0$
+            \item $RSS_U\leftarrow$ just run OLS on the mode (without any hypothesis) $$Y_i = \beta_1 + \beta_2 X_i + \epsilon_i$$
+            $$\hat \beta_2 = \frac{\sum_i (Y_i -\bar Y)(X_i - \bar X)}{\sum_i (X_i - \bar X)^2}$$
+            \item $RSS_r$, (assume null hypothesis that $\beta_2=0$ is true, so assume $\beta_2 = 0$) run a regression where $\beta_2$ doesn't show up. $$Y_i =\beta_1 + \epsilon_i$$
+            \item Comparing errors: $RSS_r \geq RSS_u$
+            \item Why?
+            \begin{itemize}
+                \item It's a minimization problem, restrictions impede that and at best have no impact
+            \end{itemize}
+        \end{itemize}
+        \item Compute $F= \frac{(RSS_R - RSS_U) / r}{RSS_U / (n-k)}$
+    \end{itemize}
+\end{itemize}
+
+\subsection{Functional Forms of Regression}
+Before, we focused on $Y_i = \beta_1 + \eta_2 X_i + \epsilon_i$. Now let's focus on some alternative linear models
+\begin{itemize}
+    \item We can use OLS on non-parametric predictions (i.e. machine learning). We can put non-linear terms in our linear approximation
+    \item Linearity in parameters $\beta_1, \beta_2$
+    \item Important log properties (assuming $A$ and $B$ are positive and $k$ is some constant)
+    \begin{itemize}
+        \item $ln(AB) = lnA + ln B$
+        \item $ln(\frac{A}{B}) = lnA - ln B$
+        \item $ln(A^k) = klnA$
+        \item Derivative: $\frac{d(lnX)}{ dX} = \frac{1}{X}$ or $d(ln X) = \frac{dX}{X}$
+        \item Note following terms:
+        \begin{itemize}
+            \item Absolute change: $X_t - X{t-1}$
+            \item Relative or proportional change: $\frac{(X_t - X_{t-1})}{X_{t-1}}$
+            \item Percentage change or percent growth rate: $\frac{(X_t - X_{t-1})}{X_{t-1}} * 100$
+            \item \textbf{Change in log variable gives a percentage change}: $ln X_t - lnX_{t-1} \approx \frac{X_t - X_{t-1}}{X_{t-1}}$
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+\subsection{``How to measure elasticity": The log-log model}
+Intuitively, think of logs as `elasticities' due to percentage change
+\begin{itemize}
+    \item Consider the following (non-linear regression model):
+    \begin{itemize}
+        \item $Y_i = \beta_1 X ^{\beta_2} exp(\epsilon_i)$
+        \item Taking a (natural) log on both sides: $ln Y_i = \beta_1 X^{\beta_2} exp(\epsilon_i)$
+        \item Now, this model (via a new linear relationship) may alternatively be expressed as 
+        \begin{itemize}
+            \item $ln Y_i = ln\beta_1 + \beta_2 lnX_i + \epsilon_i$
+            \begin{itemize}
+                \item ``Identification": How we do we identify what we really want ($\beta_1$) by getting something else?
+            \end{itemize}
+            \item Then let \\ $Y_i ^* = \alpha + \beta_2 X_i ^* + \epsilon_i$ where $Y_i ^* = lnY_i , X_i ^* = lnX_i,$ and $\alpha = ln \beta_1$
+            \item Assuming that the Basic Assumptions i) - vii) are satisfied for this model, the OLS estimators $\hat \alpha, \hat \beta_2$ will be BLUE of $\alpha, \beta_2$ (note that $\hat \beta_1 = exp(\hat \alpha$)) will be a biased estimator of $\beta_1$)
+            \item \textbf{Important:} $\beta_2$ measures the \textbf{elasticity} of Y with respect to X (the percentage change in Y for a given (small) percentage change in X) (since $\beta_2 = \frac{d(lnY)}{d(lnX)} = \frac{dY/Y}{dX/X}$)
+        \end{itemize}
+        \item Implication of linear mode: $Y_i = \beta_1 + \beta_2 X_i + \epsilon_i$
+        \begin{itemize}
+            \item Take derivative $\frac{dY}{dX} = \beta_2$. The slope is constant $\forall X \in \R$. We love linear regression so much because linearity means no change in $\beta_2$
+            \item Let $\overset{\sim}{ \beta_1} = ln(\beta_1)$
+            \item Identification: To define our $\beta_1$, we need to take an exponential: $exp(\overset{\sim}{\beta_1}) = \beta_1 = 1$
+        \end{itemize}
+    \end{itemize}
+    \item Constant elasticity model: The model assumes that the elasticity coefficient between $Y$ and $X, \beta_2$, remains constant (linearity) throughout
+    \begin{itemize}
+        \item $Y_i = \beta_1 X ^{-\beta_2}$
+    \end{itemize}
+    \item The double-log transformation: $ln Y_i = ln\beta_1 - \beta_2 ln X_i$
+    \item Expressing in units (remember log means percentage change)
+    \begin{itemize}
+        \item $\widehat{Y_t} = 0.7774 - 0.2530 ln(\widehat{X_t})$
+        \item $0.2530\%$ percentage change in $Y_t$ with a $1\%$ increase in $X_t$
+    \end{itemize}
+    \item Recall: Think of $R^2$ as a prediction parameter: Taking log-log model can improve $R^2$ due to shape of the data
+    \item Our $\epsilon_i$ is set up so that our $\epsilon_i \sim N(0, \sigma)$ (we get a Gaussian distribution in order to satisfy our Gauss-Markov theorem)
+\end{itemize}
+
+\subsection{How to measure the growth rate: The log-lin (Log Linear) model}
+\begin{itemize}
+    \item Using the compound interest formula, we can write the following model: \[Y_t = Y_0 (1+r)^t exp(\epsilon_t)\] where, for instance, $Y_t = $ real GDP at time $t, Y_0 = $ initial value of real GDP, and where r is the compound (i.e. over time) rate of growth of Y.
+    \item Taking the natural log, we can rewrite the model in the following way: \[ln(Y_t) = ln(Y_0) + tln(1+r) + \epsilon_t\]
+    \begin{itemize}
+        \item $Y^*=ln(Y_t)$
+        \item $\beta_1 = ln(Y_0)$
+        \item $\beta_2 = ln(1+r)$
+        \item $X = t$
+    \end{itemize}
+    \item Identification: identify what we want (r) by working towards getting other parameter ($\beta_2$)
+    \item Once again, assuming Basic Assumptions i) - vii) are satisfied for this model, the OLS estimators $\hat \beta_1, \hat \beta_2$ will be BLUE of $\beta_1, \beta_2$
+    \item $\beta_2$, the slope coefficient, measures the constant proportional or relative change in Y for a given absolute change in the value of the regressor (here, time) (since $\beta_2 = \frac{d(lnY)}{dt} = \frac{dY/Y}{dt})$
+    \item Note that it is NOT possible to get an unbiased estimator of r (nonlinear)
+\end{itemize}
+
+\section{Note on the nature of the error term}
+\begin{itemize}
+    \item Consider a regression model without the error term: 
+    \begin{itemize}
+        \item $Y_i = \beta_1 X_i ^{\beta_2}$
+        \item For estimation purposes, we could express this model in at least 3 different ways:
+        \begin{itemize}
+            \item $Y_i = \beta_1 X_i ^{\beta_2} \epsilon_i$
+            \item $Y_i = \beta_1 X_i ^{\beta_2} exp(\epsilon_i)$
+            \item $Y_i =\beta_1 X_i ^{\beta_2}+ \epsilon_i$
+        \end{itemize}
+    \end{itemize}
+    \item NOTE: $ln\epsilon \not \sim N(0, \sigma^2)$
+    \item $ln Y_i = ln\beta_1 + \beta_2 lnX_i + \epsilon_i \leftarrow \epsilon_i \sim N(0, \sigma^2)$
+\end{itemize}
+
+ESS: explained variation in Y
+TSS: sum of explained and residual
+
+Multiple hypotheses:
+\begin{itemize}
+    \item $H_0: \beta_2, \beta_3, \beta_4, \cdots = 0$
+    \item $H_A:$ at least one $\neq 0$
+\end{itemize}
+
+\section{Matrix Algebra}
+Recall
+\begin{itemize}
+    \item Matrix addition is commutative and associative
+    \item Scalar multiplication
+    \begin{itemize}
+        \item Distributive property
+    \end{itemize}
+\end{itemize}
+
+Consider model: $Y_i = \beta_1 + \beta_2 X_{i2} + \beta_3 X_{i3} + \cdots + \beta_k X_{ik} + \epsilon_i \leftarrow \hat \beta = (X^T X) ^{-1} X^T y$
+\begin{itemize}
+    \item $X^T X:$ Var(X)
+    \item $X^T y: $ cov(X,Y)
+\end{itemize}
+$\beta_1$
+
+IMPORTANT: $\hat \beta = (X^TX) ^{-1} X^T y$
+% \begin{itemize}
+%     \item $X^T X$ is SPD (I think)
+% \end{itemize}
+Other properties
+\begin{itemize}
+    \item Matrix multiplication is not commutative
+    \item Matrix multiplication is associative
+    \item Matrix multiplication is associative
+    \item Note: for transpose, we will write $A^\prime$ (prime is used instead of T for econometrics)
+    \begin{itemize}
+        \item $(A^\prime)^\prime = A$
+        \item $(A+B)^\prime = A^\prime + B^\prime$
+        \item $(AB)^\prime = B^\prime A^\prime$
+    \end{itemize}
+    \item Inverse
+    \begin{itemize}
+        \item $(A^{-1})^\prime = (A\prime)^{-1}$
+        \item det$(A^{-1}) = \frac{1}{det(A)}$
+    \end{itemize}
+    \item Idempotency
+    \begin{itemize}
+        \item A is said to be idempotent iff $A^2 = A$.
+        \begin{itemize}
+            \item Only square matrices can be idempotent
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+Matrix Differentiation
+\begin{itemize}
+    \item Let $a$ and $x$ be $n\times 1$ vectors and A be an $n\times n$ matrix
+    \begin{itemize}
+        \item $\frac{\partial (a^\prime x)}{\partial x_1} = a$
+        \item $\frac{\partial (x^\prime Ax)}{\partial x} = (A+A^\prime) x$
+        \item $\frac{\partial (x^\prime Ax)}{\partial x \partial x^\prime} = A+A^\prime$
+    \end{itemize}
+\end{itemize}
+\subsection{Derivation of Least Squares Estimators}
+\begin{itemize}
+    \item $\sum \hat \epsilon_i ^2 = \sum(Y_i - \hat \beta_1 - \hat \beta_2 X_{i2} - \cdots - \hat \beta_k X_{ik})^2$
+    \item $min \sum \hat \epsilon_i ^2$ over $\hat \beta_1 , \cdots, \hat \beta_k$ UGLY without matrix notation $\Rightarrow \underset{k\times 1}{\hat \beta} $ minimizes $\underset{1\times n}{\hat \epsilon ^\prime} \underset{n \times 1}{\hat \epsilon}$ where $\underset{n\times 1}{\hat \epsilon} = \underset{n\times 1}{Y} - \underset{n\times k}{X} \underset{k\times 1}{\hat \beta}$
+    \item $\underset{(n\times 1)}{Y} = \underset{(n\times k)}{ X} \underset{(k\times 1)}{\beta} + \underset{(n\times 1)}{\epsilon}$, where each row represents an observation (so n total observations)
+    \item Assumptions we need
+    \begin{itemize}
+        \item $E[\epsilon_i] = 0$
+        \item $E[\epsilon_i^2] = \sigma^2$ (heteroskedascity)
+        \item $E[\epsilon_i \epsilon_j] = 0$ (no serial correlation)
+    \end{itemize}
+    \item How do we represent these assumptions in matrix notation
+    \begin{itemize}
+        \item $E[\epsilon \epsilon^\prime] = \sigma^2 \underset{(n\times n)}{I}$. In other words, we must get a diagonal matrix to prove no serial correlation (outer product)
+        \begin{itemize}
+            \item Diagonal is $\sigma^2$ in order to prove constant variance/heteroskedasticity
+            \item The fact that the matrix is diagonal proves no serial correlation
+        \end{itemize}
+        \item For first condition of unbiasedness: $E[\epsilon] = \vec 0_k$
+        \item To conclude, we have two conditions
+        \begin{itemize}
+            \item $E[\epsilon] = \vec 0_k$
+            \item $E[\epsilon \epsilon^\prime] = \sigma^2 \underset{(n\times n)}{I}$
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+\textbf{Actual Derivation}
+\begin{itemize}
+    \item $Y = X\beta + \epsilon \leftrightarrow \epsilon = Y- X\beta$
+    \item $\sum_{i=1}^k \epsilon_i ^2 = \epsilon\prime \epsilon$ (dot product)
+    \item Goal: Find $\underset{k\times 1}{\hat \beta}$ that minimizes $\hat \epsilon^\prime \hat \epsilon$ (dot product sum) where $\hat \epsilon = Y - X\hat \beta$
+    \item $\underset{\hat \beta}{min(Y-X\hat \beta)^\prime(Y-X\hat \beta)}$ (subbed in for epsilon)
+    \item $\underset{\hat \beta}{min} (Y^\prime - \hat \beta ^\prime X^\prime) (Y-X\hat \beta)$ (applied transpose)
+    \item $\underset{\hat \beta}{min} (Y^\prime Y - \hat \beta^\prime X^\prime Y - Y^\prime X \hat \beta + \hat \beta^\prime X^\prime X\hat \beta)$ (distributed)
+    \item $\underset{\hat \beta}{Y^\prime Y - 2Y^\prime X \hat \beta + \hat \beta^\prime X^\prime X \hat \beta)}$. Take partial derivative with respect to beta
+    \begin{itemize}
+        \item For $Y^\prime Y$ partial derivative of this is 0
+        \item First matrix diff. rule: $-2Y^\prime X \hat \beta$
+        \item Use second matrix diff. rule on: $\hat \beta^\prime X^\prime X \hat \beta$
+        \item Recall: $(x^\prime x)^\prime = x^\prime x$ (helps with simplifying)
+    \end{itemize}
+    \item $-2 \frac{\partial}{\partial \hat \beta} (Y^\prime X\hat \hat \beta) + \frac{\partial}{\partial \hat \beta} (\hat \beta^\prime X^\prime X \hat \beta)=0$. $-2 X^\prime Y + 2(X^\prime X)\hat \beta = 0$ (``normal equations")
+    \item $-2 X^\prime Y + 2(X^\prime X)\hat \beta = 0$
+    \item Simplify via matrix algebra
+    \item $\hat \beta = (X^\prime X)^{-1} X^\prime Y$
+    \begin{itemize}
+        \item $X^\prime Y \leftarrow$ empirical covariance between $X$ and $Y$.
+        \item $X^\prime X$ is $Var(X)$
+        \item \textbf{VERY IMPORTANT INTUITION: }Linear regression is the $\hat \beta = \frac{Cov(X,Y)}{Var(X)}$
+        \begin{itemize}
+            \item ``How much does Y vary if we only vary X?"
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+\subsection{Expectation of $\hat \beta$}
+\begin{itemize}
+    \item $\hat \beta = (X^\prime X)^{-1} X^\prime y = (X^\prime X)^{-1} X^\prime (X\hat \beta + \epsilon)$ (subbed in y)
+    \item $\Rightarrow \hat \beta = (X^\prime X)^{-1} (X^\prime X)\beta + (X^\prime X)^{-1} X^\prime \epsilon = \beta + (X^\prime X)^{-1} X^\prime \epsilon$
+    \item Take expectation: $E(\hat \beta) = \beta + E[(X^\prime X)^{-1} X^\prime \epsilon] = \beta + (X^\prime X)^{-1} X^\prime E(\epsilon) = \beta$. RECALL: $E(\epsilon) = 0$ via Gauss-Markov assumptions, leaving only $\beta$
+\end{itemize}
+
+\subsection{Covariance Matrix of $\hat \beta$}
+\[\underset{k\times k}{cov(\hat \beta)} = \begin{bmatrix}
+    var(\hat \beta_1) & cov(\hat \beta_1, \hat \beta_2 ) &\cdots\\
+    cov(\hat \beta_2, \hat \beta_1) & var(\hat \beta_2) & \cdots \\
+    \cdots & \cdots & \cdots
+\end{bmatrix} = E[(\hat \beta- \beta)(\hat \beta - \beta)^\prime]\]
+
+\textbf{TODO}
+
+\subsection{Efficiency}
+\begin{itemize}
+    \item Recall: $\overset{\sim }{\beta} = \sum_i b_i Y_i$. Replace it with matrix C
+    \item $\hat \beta$ is BLUE (Gauss-Markov Theorem) $\Rightarrow$ for any $\underset{k\times 1}{\overset{\sim}{\beta}} = \underset{k\times n}{C}\underset{n\times 1}{Y}$
+\end{itemize}
+
+\subsection{Asymptotitc Normality}
+\begin{itemize}
+    \item Under our 4 Gauss-Markov assumptions
+    \item $\hat \beta \sim a N(\beta , \sigma^2 (X^\prime X)^{-1}$
+    \item If $\epsilon \sim N(0, \sigma^2 I)$, this is exact distribution, not just asymptotically
+\end{itemize}
+
+\subsection{Estimation of $\sigma^2$}
+\begin{itemize}
+    \item Unbiased and consistent estimator for $\sigma^2$
+    \item $s^2 = \frac{\hat \epsilon ^\prime \hat \epsilon}{n-k}$ where $\hat \epsilon^\prime \hat \epsilon$
+\end{itemize}
+
+\subsection{Dummy Variables and Chow Test}
+Dummy Variable
+\begin{itemize}
+    \item A regressor $X_{ij}$ which only takes either 0 or 1 as a value is a dummy variable; indicator functions (discontinuous/discrete function that is either 1 or 0)
+    \item Interaction term ($X_{i4}$ here, $X_{i4} = X_{i2} \cdot X_{i3} , \text{ 
+ } X_{i2}:\text{ age}, X_{i3}: \text{ isEmory}$): Will allow to pick out and ``control for" age differences in the two groups. Age times isEmory (dummy).
+    \begin{itemize}
+        \item When we are NOT in the treatment group, we get the number 0, generating an interaction term
+        \item We want to control for age in the treatment group (isEmory)
+        \item The dataset has been split to 2 based on dummy variable
+    \end{itemize}
+    \item $Y_i = \beta_1 + \beta_2 X_{i2} + \beta_3 X_{i3} + \beta_4 X_{i4} + \epsilon_i \Rightarrow  \\\begin{cases}
+        \beta_1 + \beta_2 X_{i2} + \epsilon_i \text{ if not Emory grad}\\
+        (\beta_1 + \beta_3 ) + (\beta_2 + \beta_4) X_{i2} + \epsilon_i \text{ if Emory grad (dummy variable is 1, so simplify)}
+    \end{cases}$
+    \item Run two separate regressions, since we now have 2 (non-Emory is our control group, Emory is our treatment Group)
+    \item Let $\alpha_1 = \beta_1 + \beta_3,\alpha_2 = \beta_2 + \beta_4$ equal our new parameters for the treatment group
+    \item Recall: identification: $\beta_3 \rightarrow \alpha_1 - \beta_1, \beta_4 \rightarrow \alpha_2 - \beta_2$, where the $\beta_1, \beta_2$ come from our first regression
+    \item age is a confounder. 
+    \item Possible $H_0: \beta_3 = \beta_4 = 0 \Leftrightarrow$ being Emory grad has no effect on salary
+    \begin{itemize}
+        \item Normally, 2 tests (each beta equals 0). However, we can do this in 1 test with F-test
+        \item $\beta_3 = 0 \rightarrow \alpha_1 = \beta_1$ (is the intercept of non-Emory grads the same as Emory grads)
+        \item Same goes for $\beta_4$ with slope and other alpha
+    \end{itemize}
+    \item Notes:
+    \begin{itemize}
+        \item IMPORTANT (multicollinearity): When the regression contains an intercept, and there are m groups, only include m-1 dummies, for identification (otherwise case of perfect multicollinearity - discussed later), to avoid ``dummy variable trap"
+        \item Multicollinearity
+        \begin{itemize}
+            \item Linear dependence: (design) matrix must be independent (recall: no column can be expressed as linear combination of others)
+            \item If not independent, matrix is not invertible. Think full-rank matrix
+            \item `Perfect multicollinearity': columns are linearly dependent
+            \item If there is no intercept, we can have $m$ dummies for $m$ groups without multicollinearity. Otherwise, we need to stick to at most $m-1$
+        \end{itemize}
+    \end{itemize}
+    \item Chow Test: Two regression equations (will not be tested on final)
+    \begin{itemize}
+        \item When dealing with time-series, we have a `regime shift' due to an external influence. Run linear regression on data before time T (when regime shift occurred) and after time T
+        \item Change-point detection: setting T
+        \item Problem: can only test one or two types of regressions
+        \item In a Chow test, test that both intercept and the slope are the same for the two regressions
+    \end{itemize}
+\end{itemize}
+
+\subsection{Multicollinearity}
+\begin{itemize}
+    \item Basic Assumptions used so far:
+    \begin{itemize}
+        \item $Y=X\beta + \epsilon$
+        \item X fixed (non-random)
+        \begin{itemize}
+            \item Will relax up until end of class
+        \end{itemize}
+        \item X full rank (invertibility)
+        \begin{itemize}
+            \item Relax now
+        \end{itemize}
+        \item $E(\epsilon)=0$
+        \item $var(\epsilon) = \sigma^2 I$
+        \begin{itemize}
+            \item Relax the 2 Gauss Markov assumptions in Section 11
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+GLS (generalization of OLS)
+\begin{itemize}
+    \item If Gauss-Markov not satisfied, then OLS not best estimator. Best lowest variance estimator is now GLS
+    \item If interested, look at lecture notes
+\end{itemize}
+\section{Endogeneity}
+\subsection{Omitted Variables/Omitted Variable Bias}
+\begin{itemize}
+    \item The \textbf{omission of one or more relevant variables} from the regression causes the estimates of the included variables to be \textbf{biased}. \textbf{So: $E(\tilde \beta)\neq \beta$}
+    \item \textbf{Direction of the bias }depends on covariances between included and excluded variables and on the signs of the excluded variables' coefficients
+    \begin{itemize}
+        \item This is \textbf{bad}: we don't even know the direction of the bias. For example, with omitted variables, we can predict that chocolate consumption leads to longevity
+    \end{itemize}
+    \item If \textbf{every excluded variable is orthogonal} to every included variable (matrix algebra sense), then the OLS estimates of the included variables will be unbiased
+    \begin{itemize}
+        \item Implication of orthogonal: $\frac{Cov(X,Z)}{Var(X)} = 0$
+    \end{itemize}
+    \item \textbf{Endogeneity}
+    \begin{itemize}
+        \item X is random (itself)
+        \begin{itemize}
+            \item We can't do this anymore (pull out X): $E[\epsilon X] = XE[\epsilon] = 0$, since it requires X to be nonrandom. If X is not random, then it is not correlated with anything
+            \item Need to deal with covariance now: $cov(X,\epsilon) = E[X\epsilon] + E[X]E[\epsilon]$ (considering first moment). We still assume $E[\epsilon] = 0$.
+            \item Note: in matrix form, $E[X^\prime \epsilon] \leftarrow$ we need to transpose X to match up dimensions
+            \item $E[X\epsilon] = 0$. X is an exogenous regressor iff. it is an uncorrelated regressor
+            \item Endogeneity is the opposite: it says that $X$ is correlated. From now on, we will mostly handle endogeneity
+            \item Endogeneity is a \textbf{first-order problem} (our estimator is biased). It doesn't deal with the best estimator in terms of best variance, we are saying we don't get the proper estimator if we don't address it ($E(\tilde \beta) \neq \beta$)
+        \end{itemize}
+        \item \textbf{True Model:} $Y_i = \beta X_i + \gamma Z_i + \epsilon \Rightarrow \hat \beta$
+        \begin{itemize}
+            \item If we have an omitted variable, we think that this is the model we should consider
+            \item What we wish we could do
+        \end{itemize}
+        \item \textbf{Estimated model:} $Y_i = \beta X_i + u_i \Rightarrow \tilde\beta$
+        \begin{itemize}
+            \item What we're forced to do. This is the wrong model
+            \item \textbf{Important:} respond by running an estimator on the estimated model, we call the new estimator $\tilde \beta$
+            \item $\tilde \beta = \frac{\sum X_iY_i}{\sum X_i^2} = \text{Plug in the true model} \frac{\sum X_i (\beta X_i + \gamma Z_i + \epsilon_i)}{\sum X_i^2} = \beta + \gamma \frac{\sum X_i Z_i}{\sum X_i ^2} + \frac{\sum X_i \epsilon_i }{\sum X_i^2}$
+            \begin{itemize}
+                \item  (in order to see what we want, we need to compare it to the truth). We want to see what we're doing wrong 
+                \item Take an expectation on both sides
+            \end{itemize}
+            \item $E\hat \beta = \beta + \gamma \frac{\sum X_i Z_i}{\sum X_i ^2} + \frac{\sum X_i E(\epsilon_i )}{ \sum X_i^2} = \beta + \gamma \frac{\hat \sigma_{XZ}}{\hat \sigma^2 _X} \neq \beta$ where $\hat \sigma_{XZ} = \frac{1}{n} \sum X_iZ_i$ (covariance) and $\hat \sigma^2 _X = \frac{1}{n}\sum X_i^2$ (variance of X)
+            \item \textbf{IMPORTANT TERM}: $\gamma \frac{\hat \sigma _{XZ}}{\hat \sigma_X ^2}$. When is $\gamma = 0$ or covariance is 0? When variable has no impact, unbiased.
+            \item We control for Z: we have
+            data on Z we can include in our regression
+        \end{itemize}
+        \item An omitted variable is only bad if it affects both the outcome and affects the regressor. In other words, we are taking the effects of one regressor (which we are removing) and mistakenly attributing it to another (Causal Inference). 
+        \item If the variables are uncorrelated, then there's no issue
+        \item Keeping in the Z regressor controls for Z
+    \end{itemize}
+    \item Solution to omitted variable bias?
+    \begin{itemize}
+        \item No solution really, include as many terms as possible
+    \end{itemize}
+\end{itemize}
+
+\subsection{Irrelevant Variables}
+Context
+\begin{itemize}
+    \item Inclusion of irrelevant variables does NOT cause the OLS estimators of the other variables to be biased. So $E\tilde \beta = \beta$. So, it doesn't lead us to a first-order problem, but it does lead to a second-order problem.
+    \item The problem that including irrelevant variables does cause is that it reduces the precision with which you estimate the coefficients on the other, relevant variables. So $var(\tilde \beta) > var(\hat \beta)$ (similar to overfitting)
+    \begin{itemize}
+        \item Issue: affects standard error, which is going to screw up with tests. Recall $t = \frac{\tilde \beta}{SE[\tilde \beta]}$
+        \item ``kitchen sinking" regressions (throw everything into regressions, doesn't matter if it's relevant or not)
+    \end{itemize}
+    \item This efficiency loss does not occur when the irrelevant variable s are orthogonal to the remaining variables. So when $X^\prime Z=0$ (where X are the included relevant variables, and Z are the included irrelevant variables) $\Rightarrow \tilde \beta = \hat \beta, var(\tilde \beta) = var(\hat \beta)$
+    \item \textbf{Example}: Assume that $\bar X =\bar Z = \bar Y = 0$
+    \begin{itemize}
+        \item True model: $Y_i = \beta X_i + \epsilon_i \Rightarrow \hat \beta$
+        \item Estimated model: $Y_i = \beta X_i + \gamma Z_i + u_i \Rightarrow \tilde \beta$
+        \item In our derivation, remember to plug in the true model. Note $Z_i, X_i$ are nonrandom. If Z and X are uncorrelated with epsilon: $E[Z_i \epsilon_i] = 0, E[X\epsilon_i] = 0$ (no correlation with error), then we are fine (NO PROBLEM). If there is a correlation with epsilon, then we do have a higher variance
+    \end{itemize}
+\end{itemize}
+
+\subsection{Measurement Error}
+\begin{itemize}
+    \item $Y_i^* = \beta_1 + \beta_2 X_i ^* +\epsilon_i$
+    \item The $X_i ^*$ are assumed fixed, but $X_i ^*, Y_i ^*$ are not observed directly. Instead, we observe the mismeasured $X_i, Y_i: Y_i^* + \nu_i$
+    \item Likewise, we assume $X_i = X_i ^* + \omega_i$
+    \item Even though the $X_i^*$ are fixed, the $X_i$ are random
+    \item Greater the measurement error, the greater the variance of your regression terms, the worse your regression will be
+    \item $Y_i = \beta_1 + \beta_2 X_i + \epsilon_i$
+    \item True model: $Y_i = \beta_1 + \beta_2 X_i + \epsilon_i$
+    \item Bad model: $Y_i^* + v_i = \beta_1 + \beta_2 (X_i ^* + \omega_i) + \epsilon_i$
+    \item \textbf{Classical Measurement Error}
+    \begin{itemize}
+        \item We make the following assumptions for this model:
+        \begin{itemize}
+            \item As usual $E(\epsilon_i) = 0$
+            \item $E(\nu_i)=0, E(\nu_i^2) = \sigma^2 _\nu, E(\nu_i \nu_j) = 0\forall i\neq j$
+            \item $E(\omega_i) = 0, E(\omega_i ^2) = \sigma^2_\omega, E(\omega_i\omega_j) = 0\forall i\neq j$
+            \begin{itemize}
+                \item We need to assume that $\sigma^2 > 0$ for variance and randomness (not a point-mass)
+            \end{itemize}
+            \item $E(\nu_i\omega_j) = E(\nu_i \omega_j) = E(\omega_i \epsilon_j) = 0\forall i,j$
+        \end{itemize}
+        \item Expectation of product of error terms is 0, because uncorrelated (independent). We expect error to be 0. These assumptions need not be correct, these are modeling assumptions.
+        \item $(Y_i - \nu_i ) = \beta_1 + \beta_2(X_i -\omega_i) + \epsilon_i \leftarrow $ true model: $Y^*_i = \beta_1 + \beta_2 X_i^* + \epsilon_i$
+        \item $Y_i = \beta_1 + \beta_2 X_i + \epsilon_i + \nu_i - \beta_2 \omega_i$, let $\eta_i = \epsilon_i + \nu_i - \beta_2 \omega_i$. This $\eta_i$ is our new error term
+        \item \textbf{Recall:} The error term accounts for everything we cannot see
+        \item Compute covariance of $Cov(X_i,Y_i) = E[X_i\eta_i] - E[X_i] E[\eta_i]$
+        \begin{itemize}
+            \item Plug in true model
+            \item \textbf{Note that (using true model):} $E(X_i \eta_i) = E[(X_i^* + \omega_i )(\epsilon_i + \nu _i - \beta_2 \omega_i)] = \beta_2 \sigma_\omega^2$
+            \begin{itemize}
+                \item $E[X_i^* \epsilon_i] + E[X_i^* \nu_i ] - E[X_i^* \beta_2 \omega_i] + E[\epsilon_i \omega_i] + E[\omega_i \nu_i] - \beta_2 E[\omega_i^2]$ (distributed and multiplied out everything)
+                \item \textbf{Recall:} we assume that there is ZERO correlation between error terms and $X$, which reflects in those expectations being 0. This leaves: $E[\epsilon_i \omega_i] + E[\omega_i \nu_i] - \beta_2 E[\omega_i ^2]$
+            \end{itemize}
+        \end{itemize}
+        \item \textbf{Recall:} $E[\hat \beta_2] = E\left[\frac{\sum_i (Y_i - \bar Y)(X_i - \bar X)}{\sum_i (X_i - \bar X)^2}\right]$
+        \begin{itemize}
+            \item Plug in our model $Y_i = \beta_1 + \beta_2 X_i + \eta_i$
+            \item We want to see $E[\hat \beta] = \beta$
+            \item $\tilde \beta_2 = \frac{\sum X_i Y_i }{\sum X_i^2} = \frac{X_i (\beta X_i + \eta_i)}{\sum X_i^2} = \beta_2 + \frac{\sum X_i \eta_i}{\sum X_i ^2}) $ \textbf{TODO}
+            \item At the end, we show that $plin \tilde \beta = \beta + \frac{-\beta \sigma^2 _\omega}{\sigma^2 _{X^*} + \sigma^2 _\omega}$, so our estimator plus our bias term
+            \item What does the bias term stand for?
+            \begin{itemize}
+                \item True $\beta_2$ times variance of $X_i = X_i^* + \omega_i$, where $E[\omega_i] = \sigma^2_\omega$. In denominator, $\sigma^2_{X^*}$ should be $0$, since it is deterministic
+            \end{itemize}
+            \item \textbf{IMPORTANT:} This is called the ``Iron Law of Econometrics"
+                \begin{itemize}
+                    \item $\hat \beta_2 = \beta[1- \frac{\sigma^2 _\omega}{\omega^2_{X^*} + \sigma^2 _\omega}]$
+                    \item Let's call the bias term $A$, where $A\in (0,1]$. The bias term \textbf{decreases} the slope, meaning our $\hat \beta_2 \Rightarrow$ biased towards 0 
+                    \item If $\sigma^2_\omega \text{ Large } \rightarrow \text{Lots of noise in data} \rightarrow \text{ undershoot the true value in magnitude!}$
+                    \item \textbf{Note:} We \textbf{don't} include the measurement error in $Y_i$ as represented by $\sigma^2_\nu$, meaning that measurement error in $Y_i$ \textbf{DOES NOT} bias $\hat \beta_2$ in any way
+                    \item Why? Since, $Y-i = Y^*_i +\nu_i$ gets lumped in with our $\epsilon_i$: $Y_i = \beta_1 + \beta_2 X_i^* + \nu_i + \epsilon_i$. Measurement error in $Y_i$ matters for variance, but is an independent term from $\beta_2$, so it does not affect bias
+                    \item Large variance leads to undershooting on the t-statistic test, since we decrease SE[$\hat \beta$], as $SE[\hat \beta] = \sqrt{Var(\hat \beta)}$
+                \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+%%% FOOTER %%%
+\input{footer}
+
 \end{document}
