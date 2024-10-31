@@ -1221,6 +1221,54 @@ Context
     \end{itemize}
 \end{itemize}
 
+\section{Simultaneous Equation Models}
+\begin{itemize}
+    \item Model: $Y=\beta X + \epsilon$, but now X is random and $E(X_\epsilon) = Cov(X,\epsilon)\neq 0$
+    \begin{itemize}
+        \item $\hat \beta = \frac{Cov(Y,X)}{Var(X)}$
+        \item $r^2 = \frac{Cov(X,Y)}{\sqrt{Var(X)} \sqrt{Var(Y)}}$
+        \item A regression measures the impact of X on Y: $\bar X \rightarrow \bar Y$. It cannot tell us the opposite error where Y influences X
+        \item Endogeneity: 
+        \item Basic example: supply and demand
+        \begin{itemize}
+            \item $Q_t^D = \alpha + \beta P_t + \epsilon_t$ (quantity demanded)
+            \item $Q_t^S = \gamma + \delta P_t + u_t$ (quantity supplied)
+            \item $Q=Q^D = Q^S$: equilibrium
+            \item Problem: $P_t$ determined by $Q^S = Q^D$, so \[P_t = \frac{\gamma - \alpha}{\beta - \delta} + \frac{u_t - \epsilon_t}{\beta - \delta} = u_P + \nu_t\]
+            We basically got the difference in intercepts over difference in slopes (we can call it $\mu_P$), plus an error term (never observed), we can call it $\nu_t$, so $P_t = \mu_P + \nu_t$
+            \begin{itemize}
+                \item This error term introduces an endogeneity problem
+                \item The error terms of $P_t$ are related
+                \item Why? Because they are both a function of $P_t$
+                \item Returning original equation, we can rewrite quantity equations in terms of price: $P_t = \frac{Q_t - \gamma - u_t}{\delta}$
+                \item Problem: We have a feedback loop where $P_t$ leads to a change in $Q_t$ which leads to a change in $P_t$
+                \item The idea: we have two equations that are interlinked, creating a feedback loop that screws us with endogeneity problems
+                \item This is our gateway to causal inference. We can intuitively phrase causal inference problems in terms of positive feedback loops
+                \item When do we know that we don't have this issue? Gauss-Markov Assumptions are met:
+                \item $E[\epsilon_i] = 0$
+                \item $E[P_t \epsilon_i] = 0$
+            \end{itemize}
+            \item This implies that \[ Cov(P_t\epsilon_t) \neq 0\text{ and }Cov(P_t,u_t) \neq 0\]
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+Reduced Form: write the equations out without containing the other variable
+\begin{itemize}
+    \item Solving the system (1) and (2) for $P_t$ and $Q_t$. Eliminate independent variable
+    \item In this case we solve both equations for isolated $P_t$ and set them equal to get rid of $P_t$
+    \item $P_t = \frac{\gamma - \alpha}{\beta - \delta} + \frac{u_t - \epsilon_t}{\beta - \delta} - u_t + \nu_t$
+    \item $Q_t = \frac{\gamma \beta - \delta \alpha}{\beta - \gamma} + \frac{\beta u_t - \delta \epsilon_t}{\beta - \delta}$ = $\mu_Q + \eta_t$
+    \item Now we have the following equations\[P_t = \mu_P + \nu_t\]\[Q_t = \mu_Q + \eta_t\]
+    \item Now we can get $\hat \mu_P$ and $\mu_Q$ through linear regression. But we're after the parameters in the original equations
+    \item Now we have an identification problem: can we solve backward for $\alpha, \beta, \gamma, \delta$??
+    \item Identification Problem:
+    \begin{itemize}
+        \item Can we get the structural parameters given our parameters from our reduced equations?
+        \item Add an exogenous shifter: fixes one of the lines, but varies the other
+    \end{itemize}
+    \item Instrument: an additional variable that helps solve our problem
+\end{itemize}
+
 %%% FOOTER %%%
 \input{footer}
 
