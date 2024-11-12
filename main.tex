@@ -10,6 +10,7 @@
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\Cdot}{\boldsymbol{\cdot}}
 \newcommand{\iidsim}{\overset{\text{iid}}{\sim}}
+\newcommand{\ind}{\perp\!\!\!\!\perp} 
 
 \newtheorem{thm}{Theorem}
 \newtheorem{defn}{Definition}
@@ -1264,9 +1265,262 @@ Reduced Form: write the equations out without containing the other variable
     \item Identification Problem:
     \begin{itemize}
         \item Can we get the structural parameters given our parameters from our reduced equations?
-        \item Add an exogenous shifter: fixes one of the lines, but varies the other
+        \item Add an exogenous shifter: fixes one of the lines, but varies the other \textbf{(geometric intuition: like a raytracer)}
     \end{itemize}
     \item Instrument: an additional variable that helps solve our problem
+\end{itemize}
+By definition, $\hat \beta = \frac{Cov(Y,X)}{Var(X)}$
+\begin{itemize}
+    \item But why?
+    \begin{itemize}
+        \item Intuition: If I vary X, how does it affect Y?
+        \item Regression assumes X is exogenous $E[X\epsilon] = 0$
+        \begin{itemize}
+            \item Recall (half of Gauss Markov), $E[\epsilon_i] -, E[X_i\epsilon_i] = 0\Rightarrow E[\hat \beta] = \beta$
+            \item Concept of `Transferability': $X\rightarrow Y$: we can generalize these results where one variable predicts a quantified effect on another. But, we have to confirm that it is one-directional since OLS doesn't handle this by default (causal inference and Simultaneous Equation Models)
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+Returning to causal inference and exogenous shifters, \textbf{we need more data}
+\begin{itemize}
+    \item Get the data where we hold one line constant, and the other changing: exogenous shifters!
+\end{itemize}
+How do we formalize this?
+\begin{itemize}
+    \item Suppose we have two or more variables available: $W_t$ and $Y_t$. The key assumption for those variables is that they must be exogenous \& independent of ($P_t, Q_t$). The new model then takes the form \[Q_t^D = \alpha = \alpha + \beta P_t + \phi Y_t + \epsilon_t \text{(quantity demanded)}\]\[Q_t^S = \gamma + \delta P_t + \psi W_t + u_t \text{(quantity supplied)}\]
+    \item Notice that Y is only in one equation (otherwise it would be endogenous, changing both lines when we want to fix one)
+    \item It is a \textbf{necessary condition} that the introduced variables Y and W are only showing up in one of these equations
+    \item This gives us the \textbf{new reduced form equations} (rewriting equation only in terms of exogenous things)
+    \[P_t = \pi_1 + \pi_2 Y_t + \pi_3 W_t + \nu_t\]
+    \[Q_t = \rho_1 + \rho_2 Y_t + \rho_3 W_t + \eta_t\]
+    \item Exogenous assumption (independent of distribution, uncorrelated with error term): $E[Y_t \nu_t] = 0$
+    \begin{itemize}
+        \item We need variables to be uncorrelated with error terms in order to consider them exogenous variables
+    \end{itemize}
+    \item How do we get these equations?
+    \begin{itemize}
+        \item Start with equilibrium condition: $Q_t ^D = Q_t ^S = Q$
+        \item We are solving for the first equation in this example ($P_t$)
+        \item $\alpha + \beta P_t + \phi Y_t + \epsilon_t = \gamma + \delta P_t + \Psi W_t + u_t$
+        \item Solve for $P_t$
+        \item $\beta P_t - \delta P_t = \gamma - \alpha + \Psi W_t - \phi Y_t + u_t - \epsilon_t$
+        \item Simplify and solve
+        \item We plug in the result for $P_t$ back into one of the $Q$ equations
+    \end{itemize}
+    \item Our introduced R.V.'s can be highly correlated
+    \begin{itemize}
+        \item As long as they're not 100\% correlated (perfect multicollinearity) we are fine
+    \end{itemize}
+    \item \textbf{The reduced form equations (derived)}:\[P_t = \frac{\gamma - \alpha}{\beta - \delta} - \frac{\phi}{\beta - \delta} Y_t + \frac{\Psi}{\beta - \delta} W_t + \frac{u_t - \epsilon_t}{\beta-\delta}\]
+    \[Q_t = \frac{\beta \gamma - \alpha \delta}{\beta - \delta} + \frac{-\delta \phi}{\beta - \delta} Y_t + \frac{\beta \Psi}{\beta - \delta} W_t + \frac{\beta u_t - \delta \epsilon_t}{\beta - \delta}\]
+    \item We have 6 different equations: $\pi_1, \pi_2, \pi_3, \rho_1, \rho_2 \rho_3$
+    \item With these reduced form equations, we introduce `Indirect least squares' (introduced in 1980s). We have built new regressions with reduced form equations
+    \item Indirect least squares
+    \begin{itemize}
+        \item Get reduced form regression
+        \item Check how many parameters we have
+        \item Back out one variable from the others, and identify it
+    \end{itemize}
+\end{itemize}
+
+\section{Exogenous shifters}
+Observations
+\begin{itemize}
+    \item If a variable is irrelevant, then it cannot be an exogenous variable
+\end{itemize}
+Other cases
+\begin{itemize}
+    \item $\phi=0$: can still identify demand (just identified). Cannot identify supply (underidentified)
+    \item $\psi = 0$: Can still identify supply (just identified). Cannot identify demand (underidentified)
+\end{itemize}
+Underidentified
+\begin{itemize}
+    \item We don't know enough to identify all variables
+\end{itemize}
+Just identified
+\begin{itemize}
+    \item Can figure out all variables in exactly one way (single unique solution)
+\end{itemize}
+Overidentified
+\begin{itemize}
+    \item More than one way to get values for the variables
+    \item Good, because more than one way to stress-test model (more information is better)
+\end{itemize}
+When does a unique solution fail? (when can I not identify the model?)
+\begin{itemize}
+    \item When $\phi = 0$ or $\psi = 0$ (i.e. when the exogenous variable does not belong in the equation.) $\Rightarrow$ The exogenous shifter is an \textbf{instrument}:
+    \begin{itemize}
+        \item $CoV(Q_t,W_t) \neq 0$ \textbf{(Relevance condition)}. 
+        \item $CoV(u_t, W_t ) = 0$ \textbf{(Exogeneity condition)}. Uncorrelated with all variables from the other equation
+        \item $W_t$ is excluded from the demand equation (doesn't need to be an instrument for itself)
+    \end{itemize}
+    \item Instrument: a variable that helps us identify something
+    \begin{itemize}
+        \item An exogenous shifter is a prime example of an instrument
+    \end{itemize}
+    \item Instrumental variable regression
+\end{itemize}
+
+\section{Instrumental variables}
+Recall: Core endogeneity problem:
+\begin{itemize}
+    \item Given $Y= X\beta + \epsilon, CoV(X,\epsilon)\neq 0 \Rightarrow E[\hat \beta] \neq \beta$
+    \item Recall: $\epsilon$ represents affects of what we have not observed
+\end{itemize}
+Judea Pearl Visualizations
+\begin{itemize}
+    \item Box means observable, circle means unobservable
+    \item Helps illustrate causal inference
+    \item Variables can be confounding (giving an endogeneity problem)
+    \item Directed Acyclical Graph
+    \item ``Book of Why"
+    \item self selection
+    \begin{itemize}
+        \item Heckman
+        \item Bias or effects induced by self-selecting into treatments or categories, fuelling a positive feedback loop
+        \item self selection is a classic way to introduce an endogeneity problem
+    \end{itemize}
+\end{itemize}
+
+\textbf{Motivation:} Omitting relevant variables that are correlated with regressors lead to \textbf{biased estimates of the true effect.} Examples seen in this class:
+\begin{itemize}
+    \item ``Classical omitted variable bias"
+    \item Measurement error on the regressor
+    \item Simultaneous equation models
+\end{itemize}
+To resolve the OVB one needs additional information. One method is to use \textbf{instrumental variables} (recall the exogenous shifters from SEM)\\
+Instrument
+\begin{itemize}
+    \item Takes as much covariance out of a variable while being exogenous itself
+\end{itemize}
+
+\subsection{A Basic Example (of self-selection): Drug trial with incompliance}
+\begin{itemize}
+    \item ``Mediator": refers to a variable where the effects of another external variable is represented in this variable
+    \item Josh Angrist
+    \item We \textbf{randomly assign} a drug treatment to patients. The non-treated patients do not get the drug.
+    \begin{itemize}
+        \item $X_i = 1$ if received treatment with drug, 0 otherwise
+        \item $Y_i = 1$ if health improved, 0 otherwise
+    \end{itemize}
+    \item \textbf{Potential issue:} We cannot force people to take the drug. Some people might refuse. Omitted variable bias? $\Rightarrow$ Use the additional information of the initially assigned treatment $Z_i$
+    \begin{itemize}
+        \item While the groups were initially randomized, the groups got together and pooled their drugs and placebos (sharing doses, invalidating treatment and control groups) or just didn't take it
+    \end{itemize}
+    \item ``intent to treat" variable $\rightarrow$ is a nice instrumental variable for this problem
+    \item What did Josh Angrist do?
+    \begin{itemize}
+        \item Offered drug instead of assigning group (not explicitly said but implied)
+    \end{itemize}
+    \item Numerical example:
+    \begin{itemize}
+        \item \begin{tabular}{|c|c|c|}
+            \hline
+            Offered Drug Z & Received drug X & Improved health Y \\
+            \hline
+            Yes&60\%&40\%\\
+            No & 0\% & 10\% \\
+            \hline
+        \end{tabular}
+        \item Causal effect on health of being offered drug: $40\%-10\% = 30\%$
+        \item This number underestimates the causal effect of receiving the drug, since only 60\% accept the treatment offer
+        \item Adjust to contain the     causal effect of actual treatment X on health Y:
+        \[\frac{\partial Y}{\partial X} = \frac{\partial Y/\partial Z}{\partial X/\partial Z} = \frac{30\%}{50\%} = 50\%\]
+        In English: $\frac{Z\rightarrow Y}{Z \rightarrow X} \Rightarrow X\rightarrow Y$. The effect of Z on Y with respect to the effect of Z on X
+        \item We use Z as a control to fix X for feedback, creating a causal effect, $\epsilon$ does not produce any bias since $Z\ind \epsilon$
+        \item Implicit assumption: Z only affects Y through X
+    \end{itemize}
+
+\end{itemize}
+\subsection{The simplest IV model}
+\[Y_i = \beta_0 + \beta_1 X_i + u_i\]
+\begin{itemize}
+    \item We are not willing to assume $E[u_i|X_i] = 0$ so a regression of $Y_i$ on $X_i$ may give biased estimates
+    \item Two problems now
+    \begin{itemize}
+        \item \textbf{Exogeneity:} $Cov(u_i, Z_i) = 0$. So, $Z_i$ is ``as good as randomly assigned", and $Z_i$ is only related to $Y_i$ through $X_i$
+        \item \textbf{Relevance:} $cov(X_i, Z_i) \neq 0$. So when $Z_i$ varies, $X_i$ also varies (on average).
+        \item Recall: $E[\hat \beta_1] \neq \beta_1$ if $Cov(X_i, Z_i) \neq 0$
+        \item Due to the exogeneity assumption, we have
+        \[cov(u_i,Z_i) = E[u_iZ_i] - E[u_i]E[Z_i] = 0\]
+        Hence, 
+        \[cov(Y_i, Z_i) = cov(\beta_0 + \beta_1 X_i + u_i, Z_i)\]
+        \[=\beta_1 cov(X_i, Z_i) + cov(u_i, Z_i)\]
+        \[=\beta_1 cov(X_i, Z_i)\]
+        Assume $cov(u_i, Z_i) = 0$ since we assume $Z_i$ is an exogenous variable. Using the relevance assumption, we obtain
+        \[\beta_1 = \frac{cov(Y_i, Z_i)}{cov(X_i, Z_i)}\]
+        \item How does this relate to $\frac{\partial Y / \partial Z}{\partial X / \partial Z} = \frac{\frac{Cov(Y,Z)}{Var(Z)}}{\frac{Cov(X,Z)}{Var(Z)}}$?
+        \begin{itemize}
+            \item The $Var(Z)$ terms cancel out
+        \end{itemize}
+        The derivation suggests the estimator \textbf{(Wald IV estimator)}
+        \[\hat \beta_1 = \frac{\widehat{cov}(Y_i, Z_i)}{\widehat{cov} (X_i, Z_i)} = \frac{\sum_{i=1}^n (Y_i - \bar Y)(Z_i - \bar Z)}{\sum_{i=1} ^n (X_i - \bar X)(Z_i - \bar Z)}\]
+        \item If we can find an estimator that is both exogenous and relevant, then we have a new correct estimator. We can solve endogeneity problems using OLS linear regression with this estimator
+        \begin{itemize}
+            \item Covariance of Y and Z normalized by covariance of X and Z
+        \end{itemize}
+        \item What's the caveat?
+        \begin{itemize}
+            \item It's hard to find Z, but if we do, we get a correct result
+            \item Note: \textbf{RECALL} that Z CANNOT have a direct effect on Y, because it is only allowed to have an effect via X, which makes it a great estimator
+        \end{itemize}
+        \item We can also write the estimator as (2 regressions at once)
+        \[ \hat \beta_1 = \frac{\sum_{i=1}^N (Y_i - \bar Y) (Z_i - \bar Z) / \sum_{i=1}^n (Z_i - \bar Z)^2}{\sum_{i=1}^N (X_i - \bar X) (Z_i - \bar Z) / \sum_{i=1}^n (Z_i - \bar Z)^2} = \frac{\hat \pi_1}{\hat \gamma_1}\]
+        where
+        \begin{itemize}
+            \item $\hat \pi_1$ is the slope coefficient in a regression of $Y_i$ on $Z_i$ (and a constant). This is called the reduced-form regression
+            \begin{itemize}
+                \item We first heard of reduced-form for supply and demand
+            \end{itemize}
+            \item $\hat \gamma_1$ is the slope coefficient in a regression of $X_i$ on $Z_i$ (and a constant). This is called the first-stage regression
+            \item Instrumental variable is reduced-form regression over first-stage regression
+        \end{itemize}
+        \item We use the first-stage coefficient to adjust the reduced-form coefficient for the fact that $X_i$ may not move 1-for-1 with $Z_i$
+        \item \textbf{First-stage:} $\gamma_1$: effect of X on Z
+        \item \textbf{Second-stage:} $\beta_1$: effect of Y on X, which what we want to determine, but we need X to `mediate' the effect of Z on Y to determine X
+        \item \textbf{Reduced-form coefficient:} $\pi_1 = \gamma_1 \beta_1$ (first-stage coefficient times second-stage coefficient)
+        \begin{itemize}
+            \item An intuitive way to think about this, effect of Y on Z. The product comes from chain rule
+            \item $\frac{\partial}{\partial Z} Y(X(Z)) = \frac{\partial Y}{\partial X} \frac{\partial X}{\partial Z} = \beta_1 \gamma_1$
+        \end{itemize}
+        \item In the case where $Z_i$ is binary (0 or 1), one can show that the estimator equals \[\hat \beta_1 = \frac{}{}\]
+    \end{itemize}
+    \item it can also be shown that $var(\tilde \beta) > var(\hat \beta)$ unless $\sum X_i Z_i = 0$
+    \item If $\sum X_i Z_i = 0,$ however, we see that\[\tilde \beta = \frac{(\sum Z_i^2 ) (\sum X_i Y_i)}{}\]
+\end{itemize}
+The 2-stage least-squares
+\[Y_i = \beta_0 + \beta_1 X_i + u_i \leftarrow E[X_i u_i] \neq 0\]
+\begin{itemize}
+    \item There's another way of thinking about the Wald IV estimator
+    \[X_i = \gamma_0 + \gamma_1 Z_i + \nu_i\]
+    \item Often represented as a systems of equations, including assumptions $E[X_i u_i] \neq 0$ (X is endogenous), $E[Z_i u_i ] = 0$ (Z is exogenous), and naturally $E[Z_i \nu_i] = 0$
+    \[Y_i = \beta_0 + \beta_1 X_i + u_i\]
+    \[X_i = \gamma_0 + \gamma_1 Z_i +\nu_i\]
+    \item We impose the assumptions:
+    \begin{itemize}
+        \item \textbf{Exogeneity:} $E[u_i | Z_i] = E[\nu_i | Z_i] = 0$. Or (same thing), $E[u_iZ_i] = E[\nu_i Z_i ] = 0$
+        \item \textbf{Relevance:} $\gamma_1 \neq 0$. This is equivalent to $cov(X_i, Z_i) \neq 0$
+    \end{itemize}
+    \item Substitute $X_i$ to get \textbf{reduced form:} $Y_i = \beta_0 + \beta_1 (\gamma_0 + \gamma_1 Z_i + \nu _i ) + u_i$
+    \item Here, we can draw the system/DAG to show why Z MUST be exogenous (NO parent nodes)
+    \item Suppose we observed just the ``exogenous part" of $X_i$: \[\bar X_i \overset{def}{=} \gamma_0 + \gamma_1 Z_i\]
+    \item By the exogeneity assumptions (todo)
+    \item \textbf{IMPORTANT:} This suggests the following \textbf{two-stage least-squares (2SLS)} estimator:
+    \begin{itemize}
+        \item Regress $X_i$ on $Z_i$ and on an intercept. Construct the fitted values $\hat X_i = \hat \gamma_0 + \hat \gamma_1 Z_i$ for all observations $i$
+        \item Regress $Y_i$ on $\hat X_i$ and an intercept. The coefficient on $\hat X_i$ is the estimator $\hat \beta_1$ of $\beta_1$
+        \item We have gone through all of this to produce a more generalizable model. How is this generalized?
+        \begin{itemize}
+            \item We include an intercept
+            \item We don't require X to be exogenous
+            \begin{itemize}
+                \item We don't care about $\hat \gamma_0$ or $\hat \gamma_1$, we just care about the fact they predict $\hat X_i$
+                \item By using Z to fix/hold X, we prevent it from being susceptible to other exogenous terms like $U$ (error term). We want as high of a correlation as possible between $Z_i$ and $X_i$: $CoV(Z_i, X_i)\uparrow$
+            \end{itemize}
+        \end{itemize}
+        \item We can envision X as a vector on a plane Z. If X is highly correlated with Z, then way smaller angle with Z plane. The height of X over the Z plane is other exogenous factors influencing X
+        \item This 2-SLS works well in overidentified systems
+    \end{itemize}
 \end{itemize}
 
 %%% FOOTER %%%
