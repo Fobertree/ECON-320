@@ -350,7 +350,7 @@ To show minimum (minimum squared errors $S$), take second-order partial derivati
     \item If unbiased, $E[\hat \beta_2] = \beta_2$
 \end{itemize}
 
-IF we show that estimators are both linear, unbiased, and also GLUE, we KNOW that they are the BEST estimators we can have
+IF we show that estimators are both linear, unbiased, and also BLUE, we KNOW that they are the BEST estimators we can have
 
 Gauss-Markov BLUE: Best Linear Unbiased Estimators
 \subsection{Variance}
@@ -1468,11 +1468,11 @@ Instrument
         \[ \hat \beta_1 = \frac{\sum_{i=1}^N (Y_i - \bar Y) (Z_i - \bar Z) / \sum_{i=1}^n (Z_i - \bar Z)^2}{\sum_{i=1}^N (X_i - \bar X) (Z_i - \bar Z) / \sum_{i=1}^n (Z_i - \bar Z)^2} = \frac{\hat \pi_1}{\hat \gamma_1}\]
         where
         \begin{itemize}
-            \item $\hat \pi_1$ is the slope coefficient in a regression of $Y_i$ on $Z_i$ (and a constant). This is called the reduced-form regression
+            \item $\hat \pi_1$ is the slope coefficient in a regression of $Y_i$ on $Z_i$ (and a constant). This is called the \textbf{reduced-form regression}
             \begin{itemize}
                 \item We first heard of reduced-form for supply and demand
             \end{itemize}
-            \item $\hat \gamma_1$ is the slope coefficient in a regression of $X_i$ on $Z_i$ (and a constant). This is called the first-stage regression
+            \item $\hat \gamma_1$ is the slope coefficient in a regression of $X_i$ on $Z_i$ (and a constant). This is called the \textbf{first-stage regression}
             \item Instrumental variable is reduced-form regression over first-stage regression
         \end{itemize}
         \item We use the first-stage coefficient to adjust the reduced-form coefficient for the fact that $X_i$ may not move 1-for-1 with $Z_i$
@@ -1487,6 +1487,13 @@ Instrument
     \end{itemize}
     \item it can also be shown that $var(\tilde \beta) > var(\hat \beta)$ unless $\sum X_i Z_i = 0$
     \item If $\sum X_i Z_i = 0,$ however, we see that\[\tilde \beta = \frac{(\sum Z_i^2 ) (\sum X_i Y_i)}{}\]
+\end{itemize}
+\subsection{2-SLS (2-stage Least Squares Regression)}
+Diff from iV regressor
+\begin{itemize}
+    \item IV is reduced-form over first-stage. This is a more general form
+    \item Since we only regress X on a single exogenous variable Z, X becomes exogenous itself, so we regress endogenous variable Y on exogenous variable X
+    \item We need at least one instrument for each endogenousvariable
 \end{itemize}
 The 2-stage least-squares
 \[Y_i = \beta_0 + \beta_1 X_i + u_i \leftarrow E[X_i u_i] \neq 0\]
@@ -1521,6 +1528,184 @@ The 2-stage least-squares
         \item We can envision X as a vector on a plane Z. If X is highly correlated with Z, then way smaller angle with Z plane. The height of X over the Z plane is other exogenous factors influencing X
         \item This 2-SLS works well in overidentified systems
     \end{itemize}
+\end{itemize}
+
+\subsubsection{The matrix version of the 2-SLS estimator}
+Now, consider the model \[Y=X\beta + \epsilon\]and assume that all regressors in $X$ (an $n\times p$) matrix are endogenous. We also assume that we have potential instruents $Z=(Z_1^T , ..., Z_q^T)$. In order to hav unbiased estimates, \textbf{each endogenous $x_{ij}$ needs to have at least one valid instrument $Z_{ij}$}
+\begin{itemize}
+    \item How do we combine the information of the instruments $Z_j$ to obtain unbiased estimators
+    \item If only a part of X is endogenous, the exogenous variables can be used as their own instruments
+    \item Assume we have $p$ regressors in our model:
+    \[Y_i = \beta_1 X_{i1} + ... + \beta_{p-1} X_{i(p-1)}\]
+    \item Let $q$ represent numbe  of instruments. We require: $q > p$
+\end{itemize}
+If we have \textbf{exactly one} instrument $Z_{ij}$ for each $X_{ij}$ i.e. if both Z and X are of dimension $n\times p$ (\textbf{just identified}), we can write the Wald estimator (Recall: $\hat \beta = \frac{Cov(\hat Y, Z)}{Cov(\hat X,Z)}$, you should be able to intuitively see this in matrix form: $Z^TX$ and $Z^T Y$ are analogous to covariance) as \[\hat \beta = (Z^TX)^{-1}Z^T Y\]
+If $q > p$, the matrix $Z^TX$ is $q\times p$ and not invertible, so the Wald IV estimator does not work. The 2-SLS estimator still does work, however, we can still do the 2-SLS
+\begin{itemize}
+    \item Picture the first step as projecting hte information of $X$ onto $Z$, and then use this projected information in a second stage to run the full regression: \[P_Z X\equiv Z(Z^TZ)^{-1} Z^T\]
+    \begin{itemize}
+        \item $Z^TX = z_1 x_1 + z_2 x_2 + ... \Rightarrow \frac{1}{n-2}\sum_i z_i x_i \Rightarrow Cov(\hat Z_i, X_i ) = \frac{1}{n-2} \sum_i (Z_i -\bar Z) (X_i - \bar X)$
+    \end{itemize}
+    \item The fitted values of the first regression can be written as \[\hat X= P_ZX = Z(Z^TZ)^{-1} Z^T X\]
+    \begin{itemize}
+        \item Why an additional Z at the beginning: $\hat X = Z \hat \gamma$
+        
+    \end{itemize}
+    \item Note that $P_Z = Z(Z^TZ) Z^T$ is a projection, because it is:
+    \begin{itemize}
+        \item Symmetric $(P_Z^T = P_Z)$ and 
+        \item Idempotent $(P_ZP_Z = P_Z)$. A projection of a projection will just be the same point. Recall: idempotent definition in matrices
+        \item General closed-form 2-SLS (2-stage least squares) formula
+        \[\hat \beta^{2SLS} = (X^T Z(Z^T Z)^{-1} Z^T X)^{-1} X^T Z(Z^TZ)^{-1} Z^T Y\]
+        \begin{itemize}
+            \item Combines reduced-form over first-stage regression (Wald IV estimator)
+            \item This is an expanded form analogous to $\tilde \beta \rightarrow Y = X\beta + \epsilon$
+            \item If we have endogeneity problems (i.e. $CoV(X, \epsilon) \neq 0$)
+        \end{itemize}
+        \item Finally, we can talk about identification in the general IV setting, as in the simultaneous equation models setting:
+        \begin{itemize}
+            \item The model is \textbf{underidentified} if $p>q$ (fewer instruments) [Use the pigeonhold principle]
+            \item The model is \textbf{just identified} if $p=q$. [In this setting, the Wald IV estimator works]
+            \item The model is \textbf{overidentified} if $p < q$ and each $X_{ij}$ has at least one corresponding instrument $Z_{ij}$. [We have more ways than one to identify at least one of the endogenous variables)]
+        \end{itemize}
+    \end{itemize}
+    \item Prediction vs estimation
+    \begin{itemize}
+        \item Given parameters, we estimate where to place a point. We don't care about the mechanism (it could be a black box for all we care)
+        \item Estimation: goes above and beyond to produce a mechanism for prediction
+    \end{itemize}
+\end{itemize}
+\textbf{NOTE: The following will not be on the final exam}
+
+\section{A brief introduction to DiD (Difference-in-Differences) and SC (Synthetic Controls)}
+Motivation
+\begin{itemize}
+    \item So far, we have looked at IV's as one solution to a specific version of omitted variable bias. An omitted variable bias (endogeneity problem, RECALL: $CoV(X,\epsilon) \neq \epsilon$) can also arise from \textbf{changes over time} if a treatment is not instantaneous (i.e. time-lag).
+    \item We haven't covered dynamic problems at all before in this class. We want to now use those dynamics to get rid of our endogeneity problem
+    \item Difference-in-Differences (DiD) allows us to obtain a causal effect under a strong main assumption
+\end{itemize}
+\subsection{Intermezzo: Rubin's counterfactual notation}
+\begin{itemize}
+    \item In causal inference, we want to answer questions of ``What if?"
+    \item Let's say I ate a cookie
+    \item Counterfactual: We care about a world where something doesn't happen (counter to actual fact)
+    \begin{itemize}
+        \item e.g. ``What if I had not eaten that cookie?"
+    \end{itemize}
+    \item Since we can't observe both outcomes, we have to impute the counterfactual effect (the treatment doesn't happen)
+    \item Fundamental problem of Causal Inference (1986) Holland: We can only observe ONE world (the treatment world), not both, $Y(1)$ (treatment), $Y(0)$ (no treatment)
+    \item \textbf{We can only observe one outcome of the two, so we impute the other unobservable state of the world}
+    \item One way to deal with this: instrumental variable
+    \item \textbf{How do we impute?}
+    \begin{itemize}
+        \item \textbf{Averages}
+        \item Notation: Y is outcome whether treatment is taken, T is assigned treatment
+        \item If there are a lot of people who have received a treatment, Y(1), and a lot who haven't (aka control group, Y(0)) we can take the average of their outcomes
+        \item Problem: here might be confounders: $\epsilon$, stuff that affects both the treatment and the outcome. Even worse here, we don't assume a linear regression. The only thing we assume here is: \[E[Y_i | T_i = 1] - E[Y_i | T_i = 0] = 0 \]
+        \[= (E[Y_i (1) | T_i = 1] - E[Y_i (0) | T_i = 1]) + (E[Y_i (0) |T_i = 1] - E[Y_i(0) |T_i=0])\]
+         $\text{We add and subtract $E[Y_i (0) | T_i = 1]$}$
+        \begin{itemize}
+            \item We cannot observe $E[Y_i (0) | T_i = 1]$
+            \item Incompliance: $E[Y_i (0) | T_i = 1]$. Randomness gets rid of it and makes it 0
+            \item In other words: $E[Y_i (0) | T_i = 1] = 0$, means perfect compliance
+        \end{itemize}
+        \item The first term in the above expression is the average treatment effect (ATE) on the treated, i.e.:
+        \[ ATT = E[Y_i (1)|T_i = 1] - E[Y_i (0) | T_i = 1]\]
+        \item \textbf{ATT: average treatment effect on treated}. Synthetic controls can only give us this, which is worse than ATE (which randomization can create)
+        \item $ATE = E[Y_i(1)] - E[Y_i(0)]$
+        \item When can we do this?
+        \begin{itemize}
+            \item Randomization
+            \item If we randomize irrespective of characteristics, we eliminate the effect of the confounder: $\epsilon$ CANNOT have an impact on treatment $T$ UNLESS there are compliance issues 
+            \item $E[T_i \epsilon_i ] = 0$
+            \item Treatment $T_i$ is a dummy variable
+            \item $Y_i = \beta_1 + \beta_2T_i + \epsilon$
+            \item Due to dummy variable property (0/1), we have two models now:
+            \item $Y_i = \beta_1 + \beta_2 + \epsilon_i$
+            \item $Y_i = \beta_1$
+            \item Now, we can let $\pi_2 = \beta_1 + \beta_2 \Rightarrow E[Y_i | T_i = 1]$ (expected outcome of treatment), $\pi_0 = \beta_1, E[Y_i | T_i = 0]$. Recall, regressing an constant parameters gives the average
+            \item $\sum_{not treated} Y_i = \hat \beta_1 \rightarrow \hat E[Y_i | T_i = 0]$
+            \item $\sum_{treatment} Y_i = \hat \beta_2 + \hat \beta_1 \rightarrow \hat E[Y_i | T_i = 1]$
+            \item $\hat \beta_2 = \frac{1}{treated}\sum_{treated} Y_i - \frac{1}{non-treated} \sum_{non-treated} Y_i$
+            \item $\hat \beta_2 = E[Y_i (1) ] - E[Y_i (0)]$
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Difference In Differences}
+\begin{itemize}
+    \item We use this if we can't use randomization (it's costly), we use this when people can select into treatments they want
+    \item Benefit: we don't need an instrument, we just need a treatment and control group
+    \item How do we know we estimate the actual effect of a treatment over time and not just the natural trend (natural drift) that the outcome variable follows irrespective of any treatment?
+    \item In order to isolate the true causal effect of a treatment, we need to account for the natural trend the treated group would have undergone had it not received treatment. Below is a picture
+    \item We look at where time series diverge, time T, when treatment was assigned
+    \item Recall: $E[Y_i (0) | T_i = 1]$ is unobservable
+    \begin{itemize}
+        \item Solution: We take the control group: $E[Y_i (0) | T_i = 0]$, to make the \textbf{Parallel trend assumption}
+        \item Parallel trend assumption: Says that $E[Y_i(0) | T_i = 0] \leftarrow E[Y_i | T_i = 0] \Rightarrow E[Y_i (0)|T_i = 0], E[Y_i(0)|T_i = 1]$ are parallel
+        \item In English, we take the control group and assume that it is parallel to the $E[Y_i (0) |T_i = 1]$, or incompliance group that was assigned the treatment but did not actually undergo it
+        \item The difference-in-differences compares the change in trends to make a conclusion
+    \end{itemize}
+    \item We need to at least be sure that there are parallel trends before the treatment $T$
+    \item We impute for ATT: what we care about (we can't get ATE from this)
+    \item \textbf{Implementation of the DiD estimator via regression}
+    \begin{itemize}
+        \item The DiD estimator can be implemented by the regression that corresponds to the model \[Y_{it} = \alpha_0 + \alpha_1 Post_{jt} + \alpha_2 T_i + \alpha_3 T_i \cdot Post_{it} + u_{it},\]where $i=$ individual subscript, $t=$ time periods (pre- and post- period),\[Post_{it} = \begin{cases}
+            1\text{ if }t\geq T\\0\text{ if }t < T
+        \end{cases}\]and $T_i$ is the treatment indicator and all the $u_{it}$ are standard idiosyncratic error terms potentially with serial correlation and/or heteroskedasticity
+    \end{itemize}
+\end{itemize}
+
+\section{Synthetic controls}
+Synthetic controls (Alberto Abadie), what if we don't have/cannot assume parallel trends
+
+\vspace{0.15in}
+What if we don't see parallel trends between control and treatment groups before treatment?
+\begin{itemize}
+    \item We introduce synthetic controls
+    \item If we don't have parallel trends, we construct them
+    \begin{itemize}
+        \item Example California Proposition 99 (which made it harder to sell cigarettes), and its effect on per-capita cigarette sales
+        \item We know that randomization would normally get rid of endogeneity problems, but California selected itself into treatment (NO randomization)
+        \begin{itemize}
+            \item Let's try DiD. But two problems
+            \begin{itemize}
+                \item No parallel trends
+                \item we have aggregate values (time series), no individual sampling
+            \end{itemize}
+        \end{itemize}
+        \item Convert rest of the U.S. to a synthetic California control
+    \end{itemize}
+    \item We artificially parallelize the trends before treatment via synthetic controls
+    \begin{itemize}
+        \item This is done via optimization \textbf{NOT} regression
+        \item We call it synthetic controls because have constructed a control group that does not exist
+    \end{itemize}
+    \item In our example,
+    \begin{itemize}
+        \item Find the data from each state at a point of time
+        \item Find the largest convex set that contains all of our points. We project our point (e.g. real California) onto the \textbf{convex hull (see convex geometry, convex set definition}. Our new point is a synthetic California. In the case that California is in our hull already, then we can already perfectly replicate it
+        \item The interior convex hull is represented by a weighted linear combination: $w_1 Y_1 + w_2 Y_2 + w_3 Y_3$, where $w_1, w_2, w_3 \geq 0$, $\sum_i {w_i} = 1$, where $Y_i$ is a vertex of our convex hull
+        \item In our example, Each X represents in our example per-capital sales of cigarettes by a state at a certain point in time
+        \item \textbf{Note:} our projection introduces \textbf{sparse weights}. Weights for all $Y_i$ except for the vertex of the plane we are projecting to are 0
+    \end{itemize}
+    \item The synthetic controls estimator
+    \[\hat \alpha_{1t} = Y_{1t} - \sum_{j=2}^{J+1} \lambda_j^* Y_{jt} \]
+    \item Obtaining the optimal weights $\lambda$
+    \item Caratheodory's Theorem
+    \begin{itemize}
+        \item For each pre-treatment period $t\leq T_0$, obtain the time-dependent optimal weights $\lambda_t ^*$ by \[\lambda_t^* = \underset{\lambda \in \Delta^{J}}{argmin} ||Y_0 - \sum_{j=2}^{J+1} \lambda_{jt}Y_{jt}||^2\] (J is a `simplex') where \[\Delta^J = \left\{\lambda \in \R^J : \lambda_j \geq 0 \text{ and } \sum_{j=2}^{J+1} \lambda_j = 1\right\}\]
+        \begin{itemize}
+            \item Very similar to linear regression but is not a regression. Why?
+            \begin{itemize}
+                \item Constraint with $\Delta^J$
+                \item Sum is in the interior
+            \end{itemize}
+        \end{itemize}
+        \item Apply this all to compute global weight $\lambda^*$ that will modify our control group to form a new synthetic control group: \[\lambda^* = \frac{1}{T} \sum_{t=0}^{T^*} \lambda_t^*\]
+    \end{itemize}
+    \item Using the computed weight $\lambda^* = \frac{1}{T} \sum_{t=0}^{T^*} \lambda_t^*$, we parallelize the control group before treatment and use the computed weights to impute control states
+    \item Imputation formula:\[\sum_j \lambda^* Y_{jt}\]
 \end{itemize}
 
 %%% FOOTER %%%
