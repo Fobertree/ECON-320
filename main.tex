@@ -97,11 +97,11 @@
 \subsection{Bivariate/Multivariate R.V's}
 \begin{itemize}
     \item X,Y have the joint cdf $F_{X,Y}(x,y)=P(X\leq x, Y\leq y)=\int^{x}_{-\infty}\int^{y}_{-\infty} f_{X,Y} (u,v) dvdu$
-    \item \textbf{Marginal cdf}: $F_X(x) =P(X\leq x)=\int _{-\infty} ^ x\int^{\infty}_{-\infty} f_{X,Y}(u,v)dvdu\equiv \int^{x}_{-\infty f_X(u)du}$
+    \item \textbf{Marginal cdf}: $F_X(x) =P(X\leq x)=\int _{-\infty} ^ x\int^{\infty}_{-\infty} f_{X,Y}(u,v)dvdu\equiv \int^{x}_{-\infty} f_X(u)du$
     \item \textbf{Marginal pdf}: $f_X(x) =P(X\leq x)=\int _{-\infty} ^ {\infty} f_{X,Y}(u,v)dv$. In other words, take integral (a slice) along one axis
     \item \textbf{Independence:} X and Y are independent iff
     \begin{itemize}
-        \item $f_X,Y (x,y)=f_X(x) f_Y(y), $ so \\
+        \item $f_{X,Y} (x,y)=f_X(x) f_Y(y), $ so \\
         $P(X\leq x, Y\leq y) = \int^{x}_{-\infty}\int^{y}_{-\infty} f_X(u)f_Y(v) dvdu=P(X\leq x)P(Y\leq y)$
     \end{itemize}
     \item \textbf{Conditional pdf}: $\frac{\text{joint distribution}}{\text{marginal distribution}}$
@@ -113,33 +113,33 @@
 \end{itemize}
 \subsection{Covariance}
 \begin{itemize}
-    \item $cov(X,Y)=E[(X-\mu_X)(Y-\mu_Y)]=E(XY)-\mu_X\mu_Y$ $(a^2-b^2)$
+    \item $cov(X,Y)=E[(X-\mu_X)(Y-\mu_Y)]=E(XY)-\mu_X\mu_Y$ $(a^2-b^2) = E(XY) - E(X)E(Y)$
 \end{itemize}
 
 \subsection{General Rules for Means, Variances, and Covariances}
 \begin{itemize}
     \item 1) $E(a+bX+bY+dZ+...)=a+bE[X]+cE[Y]+dE[Z]+...$
     \item 2) $cov(a+bX, c+dY)=bdcov(X,Y)$
-    \item 3) Important (like binomial formula $(a+b)^2$): $var(a+bX+cY)=b^2 var(X)+ c^2 var(Y)+2bccov(X,Y)$
+    \item 3) \textbf{IMPORTANT (like binomial formula $(a+b)^2$):} $var(a+bX+cY)=b^2 var(X)+ c^2 var(Y)+2bccov(X,Y)$
     \item $X$ and $Y$ are independent $\Rightarrow cov(X,Y)=0$ [Note: Converse is not true]
 \end{itemize}
 \subsection{Standardized Variables and Correlation}
 \begin{itemize}
     \item treat the bar as indicating standardized variables here
-    \item Let $\bar{X} = \frac{X-\mu_X}{\sigma_x}$ and $\bar{Y}
+    \item Let $\tilde{X} = \frac{X-\mu_X}{\sigma_x}$ and $\tilde{Y}
     =\frac{Y-\mu_Y}{\sigma_Y}$ $\leftarrow$ like Normalization layer in Transformer architecture, containing range
-    \item \textbf{CHECK WITH PROF}: $E(\bar{X})=0=E(\bar{Y})$
+    \item Let (standardization): $E(\tilde{X})=0=E(\tilde{Y})$
     \item Why?
     \begin{itemize}
-        \item $E(\bar X) = E[\frac{X-\mu_X}{\sigma_X}]=\frac{1}{\sigma_X}E[X-\mu_X]=\frac{1}{\sigma_X} E[X] -\mu_X=\frac{1}{\sigma_X}(\mu_X-\mu_X)=0$
-        \item $var(\bar X) = \sigma ^{-2} var(X)=1=var(\bar Y)$
+        \item $E(\tilde X) = E[\frac{X-\mu_X}{\sigma_X}]=\frac{1}{\sigma_X}E[X-\mu_X]=\frac{1}{\sigma_X} E[X] -\mu_X=\frac{1}{\sigma_X}(\mu_X-\mu_X)=0$
+        \item $var(\tilde X) = \sigma ^{-2} var(X)=1=var(\tilde Y)$
     \end{itemize}
-    \item $var(\bar X) = 1= var(\bar Y)$ \textbf{check if X is supposed to be barred}
+    \item $var(\tilde X) = 1= var(\tilde Y)$ \textbf{check if X is supposed to be barred}
     \item Why?
     \begin{itemize}
-        \item $var(\bar X)=\sigma^{-2} var(X-\mu_X) \text{ (factoring out constant from var() squares it)}=\sigma^{-2} var(\bar X)= \sigma^{-2} \times \sigma^2 = 1 = var(\bar Y)$
+        \item $var(\tilde X)=\sigma^{-2} var(X-\mu_X) \text{ (factoring out constant from var() squares it)}=\sigma^{-2} var(\tilde X)= \sigma^{-2} \times \sigma^2 = 1 = var(\tilde Y)$
     \end{itemize}
-    \item The \textbf{Correlation} between X and Y is $\rho_{X,Y}=\frac{cov(X,Y)}{\sigma_X \sigma_Y} = cov(\bar X, \bar Y)$. 
+    \item The \textbf{Correlation} between X and Y is $\rho_{X,Y}=\frac{cov(X,Y)}{\sigma_X \sigma_Y} = cov(\tilde X, \tilde Y)$. 
     \begin{itemize}
         \item Correlation is the covariance between standardized variables. Since mean doesn't matter here (constants removed in cov()), we only need to standardize with $\sigma$
     \end{itemize}
@@ -153,8 +153,15 @@
     \item $f_X(x)=\frac{1}{\sqrt{2\pi\sigma^2}}exp\{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2\}$
 \end{itemize}
 \subsection{Useful Results for Gaussian}
+Emphasis on results 3, 4, 6:
 \begin{itemize}
-    \item 4) Normal Distribution / Chi-Square = t distribution
+    \item 1) Sum of Normals are Normals
+    \item 2) $X_i \sim N(0,1) \Rightarrow X_i^2 \sim \chi_1^2$ (chi dist., 1 dof)
+    \item \textbf{3)} $X_i \sim N(0,1), i=1,...,n$ independent $\Rightarrow \sum_{i=1}^n X_i^2 \sim \chi_n^2$ (n dof)
+    \item \textbf{4)} $X\sim N(0,1)$ and $U\sim \chi_n^2$ with X, U independent $\Rightarrow \frac{Z}{\sqrt{U/n}} \sim t_n$, Normal Distribution / Chi-Square = t distribution
+    \item Below are F-test/distribution observations:
+    \item 5) $U\sim \chi_{n_1}^2$ and $V\sim \chi_{n_2}^2$ with U, V independent $\Rightarrow \frac{U/n_1}{V/n_2} \sim F_{n_1, n_2}$ (independent chi-distributions normalized by dof create F-distribution)
+    \item \textbf{6)} (based on (2) and (5)) $X\sim N(0,1)$ and $U\sim \chi_n^2$ w/ X,U independent $\Rightarrow \frac{X^2}{U/n}\sim F(1,n)$ (normal dist. \textbf{squared} over chi dist. forms F-dist)
 \end{itemize}
 
 
@@ -194,9 +201,9 @@ End first-day end page 3. Useful Results for Gaussian incomplete
     \item An estimator $\hat \mu$ (hat indicates estimator) of $\mu$ is \textbf{unbiased} if $E(\hat \mu) = \mu$
     \item An estimator is \textbf{efficient} if $var(\hat \mu) \leq var(\tilde{\mu})\text{ } \forall \text{ unbiased estimators } \tilde \mu$. Let $\sim$ signify unbiased estimator
     \item Think of ``bias" as being related to mean and ``efficient" as being related to variance
-    \item \textbf{Mean Square Error} of $\hat mu$ is $MSE(\hat \mu)\equiv E[(\hat \mu -\mu)^2]$
+    \item \textbf{Mean Square Error} of $\hat \mu$ is $MSE(\hat \mu)\equiv E[(\hat \mu -\mu)^2]$
     \begin{itemize}
-        \item $MSE(\hat \mu) \equiv (E\hat \mu -\mu)^2 + var(\hat \mu) = [Bias(\hat \mu)]^2 + var(\hat \mu)$
+        \item $MSE(\hat \mu) \equiv (E[\hat \mu] -\mu)^2 + var(\hat \mu) = [Bias(\hat \mu)]^2 + var(\hat \mu)$
     \end{itemize}
     \item Estimators discussed so far don't concern the size of the sample. But some may prefer large samples (can shrink bias and/or variance). In such cases, estimators may be judged on its asymptotic properties - properties in very large samples
 \end{itemize}
@@ -216,7 +223,7 @@ End first-day end page 3. Useful Results for Gaussian incomplete
 
 \subsection{Basic Assumptions about Linear Model}
 \begin{itemize}
-    \item Homoskedasticity: $E(\epsilon_i^2) = var(\epsilon_i) = \sigma^2 \forall i$. The dispersion of each data point remains constant
+    \item Homoskedasticity: $E(\epsilon_i^2) = var(\epsilon_i) = \sigma^2, \forall i$. The dispersion of each data point remains constant
     \item No Serial Correlation: $E(\epsilon_i \epsilon_j) = 0$ if $i\neq j$. No relationship between data
 \end{itemize}
 
@@ -224,13 +231,13 @@ End first-day end page 3. Useful Results for Gaussian incomplete
 \begin{itemize}
     \item Always focus on reducing $Y_i$ to $\epsilon_i$
     \item $E(Y_i)=E(\beta_1 + \beta_2 X_i + \epsilon_i) =\beta_1 + \beta_2 X_i + E(\epsilon_i) =\beta_1+\beta_2 X_i$. Expectation of $\beta_1 + \beta_2 X_i$ is itself since it is nonrandom. $E[\epsilon_i]=0$
-    \item $varY_i = E[(Y_i -EY_i)^2] = E[(\beta_1+\beta-2 X_i + \epsilon_i -\beta_1 -\beta_2 X_i)^2]=E(\epsilon_i ^2) \textbf{(homoskedasticity)}= \sigma ^2$
+    \item $var(Y_i) = E[(Y_i -EY_i)^2] = E[(\beta_1+\beta-2 X_i + \epsilon_i -\beta_1 -\beta_2 X_i)^2]=E(\epsilon_i ^2) \textbf{(homoskedasticity)}= \sigma ^2$
     \item $cov(Y_i, Y_j) = 0, \forall i \neq j$
 \end{itemize}
 
 EPSILON IS AN ASSUMPTION AND IS \textbf{NEVER} OBSERVED. ALL WE KNOW IS $E[\epsilon_i] = 0$
 
-\subsection{Estimation of the regression coefficients $\beta_0, \beta_2$}
+\subsection{Estimation of the regression coefficients $\beta_1, \beta_2$}
 \begin{itemize}
     \item How do we choose the ``line of best fit"? Broadly speaking, minimize error, but what is error? Also broadly speaking, it is an estimator of $\epsilon_i$, which we prefer to minimize.
     \begin{itemize}
@@ -288,7 +295,7 @@ We often test $\beta_2 = 0$. Papers want a non-zero slope ($\beta_2$) because it
             \item Philosophical: We get numbers that will be our estimators. In practice, not strictly necessary.
         \end{itemize}
         \item We can condense the partial derivatives to be even simpler
-        \item We call the 2 equations we have to solve for $\hat \beta_1, \hat \beta_2$ the ``normal equations". Rewriting and letting $\hat \epsilon_i=Y_i -\hat \beta_1 -\hat \beta_2 X_i \text{ (and diving both sides by constant -2)},$ we have
+        \item We call the 2 equations we have to solve for $\hat \beta_1, \hat \beta_2$ the \textbf{``normal equations"}. Rewriting and letting $\hat \epsilon_i=Y_i -\hat \beta_1 -\hat \beta_2 X_i \text{ (and diving both sides by constant -2)},$ we have
         \begin{itemize}
             \item $\frac{1}{n}\sum _{i=1} ^ n \hat \epsilon_i = 0$
             \item $\frac{1}{n} \sum_{i=1} ^ n X_i \hat \epsilon_i =0$
@@ -339,20 +346,26 @@ To show minimum (minimum squared errors $S$), take second-order partial derivati
 \subsection{Unbiasedness of OLS Estimators}
 \begin{itemize}
     \item How do we prove unbiasedness? $E[\epsilon_i]=0$. 
-    \item Step 1: Setup $E[\hat \beta_2 ]$. To do this, lets work backwards by plugging in the estimator $E[\hat \beta_2]=E[\frac{\sum_i (Y_i -\bar Y) (X_i -\bar X)}{\sum_i (X_i -\bar X)^2}]$. We need to make the epsilon show up 
+    \item Step 1: Setup $E[\hat \beta_2 ]$. To do this, lets work backwards by plugging in the estimator $E[\hat \beta_2]=E\left[\frac{\sum_i (Y_i -\bar Y) (X_i -\bar X)}{\sum_i (X_i -\bar X)^2}\right]$ (recall covariance over variance). We need to make the epsilon show up 
     \item Step 2: Plug in the model for $Y_i, \bar Y$. Substitute $Y_i=\beta_1 + \beta_2 X_i + \epsilon_i$ and $\bar Y=\beta_1 +\beta_2 \bar X + \bar \epsilon$ into equations to add $\hat \beta_1, \hat \beta_2$ by expanding $(Y_i -\bar Y)$ \\
-    $=E[\frac{\frac{1}{n} 
-    \sum_{i=1} ^ n(\beta_1 + \beta_2 X_i + \epsilon_i - \beta_1 - \beta_2 \bar X -\bar \epsilon)(X_i -\bar X)}{\hat \sigma_X ^2}]$. $\beta_1$ is canceled out, can pull out $\beta_2$
-    \item $E[\frac{\frac{1}{n} \sum_{i=1} ^ n (\beta_2 (X_i -\bar X) + \epsilon_i -\bar \epsilon)(X_i -\bar X)}{\hat \sigma_X ^2}]$
-    \item $=E[\frac{\frac{1}{n} \sum_{i=1}^n \beta_2 (X_i - \bar X)^2 + (\epsilon_i -\bar \epsilon) (X_i -\bar X)}{\hat \sigma_X ^2}]$. Separate into two expectations in next step
-    \item $=E[\frac{\frac{1}{n}\sum_{i=1} ^n \beta_2 (X_i -\bar X)^2}{\frac{1}{n} \sum_{i=1} ^n (X_i - \bar X)^2}] + E[ \frac{\frac{1}{n}\sum_{i=1} ^ n (X_i -\bar X) (\epsilon_i -\bar \epsilon)}{\frac{1}{n} \sum_i(X_i -\bar X)^2}]$
-    \item $=E[\beta_2] + E[ \frac{\frac{1}{n}\sum_{i=1} ^ n (X_i -\bar X) (\epsilon_i -\bar \epsilon)}{\frac{1}{n} \sum_i(X_i -\bar X)^2}]$. We can take out $\beta_2$ out of expectation since it's a constant. \textbf{To show unbiasedness, we must show that the second expectation is 0}.
+    $=E\left[\frac{\frac{1}{n} 
+    \sum_{i=1} ^ n(\beta_1 + \beta_2 X_i + \epsilon_i - \beta_1 - \beta_2 \bar X -\bar \epsilon)(X_i -\bar X)}{\hat \sigma_X ^2}\right]$. $\beta_1$ is canceled out, can pull out $\beta_2$
+    \item $E\left[\frac{\frac{1}{n} \sum_{i=1} ^ n (\beta_2 (X_i -\bar X) + \epsilon_i -\bar \epsilon)(X_i -\bar X)}{\hat \sigma_X ^2}\right]$
+    \item $=E\left[\frac{\frac{1}{n} \sum_{i=1}^n \beta_2 (X_i - \bar X)^2 + (\epsilon_i -\bar \epsilon) (X_i -\bar X)}{\hat \sigma_X ^2}\right]$. Separate into two expectations in next step
+    \item $=E\left[\frac{\frac{1}{n}\sum_{i=1} ^n \beta_2 (X_i -\bar X)^2}{\frac{1}{n} \sum_{i=1} ^n (X_i - \bar X)^2}\right] + E\left[ \frac{\frac{1}{n}\sum_{i=1} ^ n (X_i -\bar X) (\epsilon_i -\bar \epsilon)}{\frac{1}{n} \sum_i(X_i -\bar X)^2}\right]$
+    \item $=E[\beta_2] + E\left[ \frac{\frac{1}{n}\sum_{i=1} ^ n (X_i -\bar X) (\epsilon_i -\bar \epsilon)}{\frac{1}{n} \sum_i(X_i -\bar X)^2}\right]$. We can take out $\beta_2$ out of expectation since it's a constant. \textbf{To show unbiasedness, we must show that the second expectation is 0}.
     \item If unbiased, $E[\hat \beta_2] = \beta_2$
 \end{itemize}
 
 IF we show that estimators are both linear, unbiased, and also BLUE, we KNOW that they are the BEST estimators we can have
 
-Gauss-Markov BLUE: Best Linear Unbiased Estimators
+\textbf{Gauss-Markov BLUE: Best Linear Unbiased Estimators}
+\begin{itemize}
+    \item Linearity
+    \item Homoskedascity (constant varaiation)
+    \item Unbiasedness
+    \item No Serial Correlation (uncorrelated epsilon terms)
+\end{itemize}
 \subsection{Variance}
 Context
 \begin{itemize}
